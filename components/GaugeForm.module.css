@@ -1,0 +1,170 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  flex: 1;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-black);
+  letter-spacing: 0.01em;
+}
+
+.labelHint {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-gray-400);
+  margin-top: 2px;
+}
+
+.select,
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.9375rem;
+  font-family: var(--font-family);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.selectWrapper {
+  position: relative;
+}
+
+.selectWrapper::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--color-black);
+  pointer-events: none;
+}
+
+.select:focus,
+.input:focus {
+  border-color: var(--color-purple);
+  box-shadow: 0 0 0 3px var(--color-purple-light);
+}
+
+.select:disabled,
+.input:disabled {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-600);
+  cursor: not-allowed;
+}
+
+.input[type='number']::-webkit-inner-spin-button,
+.input[type='number']::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--color-gray-200);
+}
+
+.optionalHeading {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-black);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.optionalBadge {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 4px;
+  padding: 1px 6px;
+  letter-spacing: 0.02em;
+}
+
+.optionalHint {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+  margin: -16px 0 0;
+}
+
+.submitButton {
+  margin-top: auto;
+  padding: 14px 24px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  color: var(--color-white);
+  background-color: var(--color-purple);
+  border: 2px solid var(--color-purple);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--color-purple-dark);
+  border-color: var(--color-purple-dark);
+}
+
+.submitButton:active:not(:disabled) {
+  background-color: var(--color-purple-dark);
+  border-color: var(--color-purple-dark);
+}
+
+.submitButton:disabled {
+  background-color: var(--color-gray-300);
+  border-color: var(--color-gray-300);
+  cursor: not-allowed;
+}
+
+.loadingDots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.loadingDots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  animation: blink 1.2s infinite;
+}
+
+.loadingDots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loadingDots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}

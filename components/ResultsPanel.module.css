@@ -76,6 +76,25 @@
   flex-direction: column;
   gap: 4px;
 }
+  @media (max-width: 768px) {
+    .gaugeCard {
+      padding: 20px 12px;
+      font-size: 1rem;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+    .summaryRow {
+      flex-direction: column;
+      gap: 12px;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+    .summaryItem {
+      padding: 12px;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+  }
 
 .gaugeCardLabel {
   font-size: 0.6875rem;

@@ -69,6 +69,35 @@
   font-size: 0.75rem;
   color: var(--color-gray-400);
 }
+  /* --- Responsive improvements --- */
+  @media (max-width: 768px) {
+    .wrapper, .main, .leftColumn, .rightColumn {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      grid-template-columns: 1fr;
+    }
+    .gaugeCard {
+      padding: 20px 12px;
+      font-size: 1rem;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+    .summaryRow {
+      flex-direction: column;
+      gap: 12px;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+    .summaryItem {
+      padding: 12px;
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+  }
 
 .footer a {
   color: var(--color-purple);

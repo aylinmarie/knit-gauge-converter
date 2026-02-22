@@ -1,0 +1,174 @@
+.empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-gray-300);
+  user-select: none;
+}
+
+.emptyIcon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-gray-400);
+  text-align: center;
+  max-width: 240px;
+  line-height: 1.6;
+}
+
+/* Loading skeleton */
+.skeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skeletonBlock {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-100) 0%,
+    var(--color-gray-200) 50%,
+    var(--color-gray-100) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonBlock:nth-child(1) {
+  height: 80px;
+}
+
+.skeletonBlock:nth-child(2) {
+  height: 24px;
+  width: 60%;
+}
+
+.skeletonBlock:nth-child(3) {
+  height: 120px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Results */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.gaugeCard {
+  border: 2px solid var(--color-black);
+  border-radius: var(--radius-md);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gaugeCardLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-400);
+}
+
+.gaugeCardValue {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-black);
+  line-height: 1;
+  margin: 8px 0 4px;
+}
+
+.gaugeCardUnit {
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+}
+
+.summaryRow {
+  display: flex;
+  gap: 24px;
+}
+
+.summaryItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+}
+
+.summaryItemLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gray-400);
+}
+
+.summaryItemValue {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+
+.reasoningSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reasoningLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-400);
+}
+
+.reasoningText {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-gray-800);
+  border-left: 3px solid var(--color-gray-200);
+  padding-left: 16px;
+}
+
+/* Error */
+.error {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1.5px solid var(--color-black);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-gray-100);
+}
+
+.errorTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.errorMessage {
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+}

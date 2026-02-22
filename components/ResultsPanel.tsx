@@ -1,16 +1,6 @@
 import styles from "./ResultsPanel.module.css";
 import type { EstimateResult } from "@/app/page";
-
-const WEIGHT_LABELS: Record<string, string> = {
-  lace: "Lace (0)",
-  "super-fine": "Super Fine / Fingering (1)",
-  fine: "Fine / Sport (2)",
-  light: "Light / DK (3)",
-  medium: "Medium / Worsted (4)",
-  bulky: "Bulky (5)",
-  "super-bulky": "Super Bulky (6)",
-  jumbo: "Jumbo (7)",
-};
+import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
 
 interface ResultsPanelProps {
   result: EstimateResult | null;
@@ -41,10 +31,10 @@ export default function ResultsPanel({ result, loading, error }: ResultsPanelPro
   if (!result) {
     return (
       <div className={styles.empty}>
-        <div className={styles.emptyIcon}>◎</div>
+        <div className={styles.emptyIcon} aria-hidden="true">◎</div>
         <p className={styles.emptyText}>
           Fill in the form and click &ldquo;Estimate Gauge&rdquo; to get your
-          AI-powered gauge recommendation.
+          gauge recommendation.
         </p>
       </div>
     );
@@ -62,13 +52,13 @@ export default function ResultsPanel({ result, loading, error }: ResultsPanelPro
         <div className={styles.summaryItem}>
           <span className={styles.summaryItemLabel}>Pattern Weight</span>
           <span className={styles.summaryItemValue}>
-            {WEIGHT_LABELS[result.patternYarnWeight] ?? result.patternYarnWeight}
+            {YARN_WEIGHT_LABELS[result.patternYarnWeight] ?? result.patternYarnWeight}
           </span>
         </div>
         <div className={styles.summaryItem}>
           <span className={styles.summaryItemLabel}>Your Weight</span>
           <span className={styles.summaryItemValue}>
-            {WEIGHT_LABELS[result.userYarnWeight] ?? result.userYarnWeight}
+            {YARN_WEIGHT_LABELS[result.userYarnWeight] ?? result.userYarnWeight}
           </span>
         </div>
         <div className={styles.summaryItem}>
@@ -80,9 +70,16 @@ export default function ResultsPanel({ result, loading, error }: ResultsPanelPro
       </div>
 
       <div className={styles.reasoningSection}>
-        <span className={styles.reasoningLabel}>Technical Analysis</span>
+        <span className={styles.reasoningLabel}>How we got there</span>
         <p className={styles.reasoningText}>{result.reasoning}</p>
       </div>
+
+      {result.needleSuggestion && (
+        <div className={styles.needleSection}>
+          <span className={styles.needleLabel}>Needle recommendation</span>
+          <p className={styles.needleText}>{result.needleSuggestion}</p>
+        </div>
+      )}
     </div>
   );
 }

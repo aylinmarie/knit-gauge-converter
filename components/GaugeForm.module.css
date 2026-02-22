@@ -62,13 +62,14 @@
 
 .select:focus,
 .input:focus {
-  border-color: var(--color-black);
+  border-color: var(--color-purple);
+  box-shadow: 0 0 0 3px var(--color-purple-light);
 }
 
 .select:disabled,
 .input:disabled {
   background-color: var(--color-gray-100);
-  color: var(--color-gray-400);
+  color: var(--color-gray-600);
   cursor: not-allowed;
 }
 
@@ -82,6 +83,34 @@
   background-color: var(--color-gray-200);
 }
 
+.optionalHeading {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-black);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.optionalBadge {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 4px;
+  padding: 1px 6px;
+  letter-spacing: 0.02em;
+}
+
+.optionalHint {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+  margin: -16px 0 0;
+}
+
 .submitButton {
   margin-top: auto;
   padding: 14px 24px;
@@ -89,20 +118,22 @@
   font-weight: 600;
   font-family: var(--font-family);
   color: var(--color-white);
-  background-color: var(--color-black);
-  border: 2px solid var(--color-black);
+  background-color: var(--color-purple);
+  border: 2px solid var(--color-purple);
   border-radius: var(--radius-sm);
   cursor: pointer;
   letter-spacing: 0.01em;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .submitButton:hover:not(:disabled) {
-  background-color: var(--color-gray-800);
+  background-color: var(--color-purple-dark);
+  border-color: var(--color-purple-dark);
 }
 
 .submitButton:active:not(:disabled) {
-  background-color: var(--color-gray-600);
+  background-color: var(--color-purple-dark);
+  border-color: var(--color-purple-dark);
 }
 
 .submitButton:disabled {

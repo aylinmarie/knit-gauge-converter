@@ -1,14 +1,20 @@
 .wrapper {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: var(--color-white);
 }
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--color-white);
   border-bottom: 2px solid var(--color-black);
   padding: 24px 48px;
   display: flex;
+  flex-direction: column;
   align-items: baseline;
   gap: 12px;
 }
@@ -38,12 +44,14 @@
   padding: 48px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .rightColumn {
   padding: 48px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .columnLabel {
@@ -62,7 +70,24 @@
   color: var(--color-gray-400);
 }
 
+.footer a {
+  color: var(--color-purple);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  color: var(--color-purple-dark);
+}
+
 @media (max-width: 768px) {
+  .wrapper {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
   .header {
     padding: 20px 24px;
     flex-direction: column;
@@ -77,10 +102,12 @@
     border-right: none;
     border-bottom: 2px solid var(--color-black);
     padding: 32px 24px;
+    overflow-y: visible;
   }
 
   .rightColumn {
     padding: 32px 24px;
+    overflow-y: visible;
   }
 
   .footer {

@@ -11,6 +11,7 @@ export interface EstimateResult {
   patternYarnWeight: string;
   patternGauge: number;
   userYarnWeight: string;
+  needleSuggestion?: string;
 }
 
 export default function Home() {
@@ -22,6 +23,8 @@ export default function Home() {
     patternYarnWeight: string;
     patternGauge: number;
     userYarnWeight: string;
+    fiberType?: string;
+    tension?: string;
   }) => {
     setLoading(true);
     setError(null);
@@ -46,9 +49,12 @@ export default function Home() {
         patternYarnWeight: data.patternYarnWeight,
         patternGauge: data.patternGauge,
         userYarnWeight: data.userYarnWeight,
+        needleSuggestion: json.needleSuggestion,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred.",
+      );
     } finally {
       setLoading(false);
     }
@@ -59,7 +65,7 @@ export default function Home() {
       <header className={styles.header}>
         <h1 className={styles.headerTitle}>Knitting Gauge Estimator</h1>
         <span className={styles.headerSubtitle}>
-          AI-powered gauge conversion for yarn substitution
+          Gauge conversion + AI needle recommendations for yarn substitution
         </span>
       </header>
 
@@ -76,7 +82,14 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        Knitting Gauge Estimator — powered by Claude &amp; Supabase
+        Knitting Gauge Estimator — powered by Supabase + Anthropic · created by{" "}
+        <a
+          href="https://www.aylinmarie.co/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Aylin Marie
+        </a>
       </footer>
     </div>
   );

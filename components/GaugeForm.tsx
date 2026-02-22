@@ -14,11 +14,37 @@ const YARN_WEIGHTS = [
   { value: "jumbo", label: "Jumbo (7)" },
 ];
 
+const FIBER_TYPES = [
+  { value: "wool", label: "Wool" },
+  { value: "superwash-wool", label: "Superwash Wool" },
+  { value: "cotton", label: "Cotton" },
+  { value: "acrylic", label: "Acrylic" },
+  { value: "alpaca", label: "Alpaca" },
+  { value: "linen", label: "Linen" },
+  { value: "bamboo", label: "Bamboo" },
+  { value: "mohair-blend", label: "Mohair Blend" },
+  { value: "silk-blend", label: "Silk Blend" },
+];
+
+const TENSION_OPTIONS = [
+  {
+    value: "loose",
+    label: "Loose — my stitches tend to be bigger than average",
+  },
+  { value: "average", label: "Average — I usually match the pattern gauge" },
+  {
+    value: "tight",
+    label: "Tight — my stitches tend to be smaller than average",
+  },
+];
+
 interface GaugeFormProps {
   onSubmit: (data: {
     patternYarnWeight: string;
     patternGauge: number;
     userYarnWeight: string;
+    fiberType?: string;
+    tension?: string;
   }) => void;
   loading: boolean;
 }
@@ -27,6 +53,8 @@ export default function GaugeForm({ onSubmit, loading }: GaugeFormProps) {
   const [patternYarnWeight, setPatternYarnWeight] = useState("medium");
   const [patternGauge, setPatternGauge] = useState<string>("18");
   const [userYarnWeight, setUserYarnWeight] = useState("light");
+  const [fiberType, setFiberType] = useState("");
+  const [tension, setTension] = useState("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,6 +64,8 @@ export default function GaugeForm({ onSubmit, loading }: GaugeFormProps) {
       patternYarnWeight,
       patternGauge: gaugeNum,
       userYarnWeight,
+      fiberType: fiberType || undefined,
+      tension: tension || undefined,
     });
   };
 
@@ -114,6 +144,61 @@ export default function GaugeForm({ onSubmit, loading }: GaugeFormProps) {
           </select>
         </div>
       </div>
+
+      <div className={styles.divider} />
+
+      <p className={styles.optionalHeading}>
+        Needle recommendation{" "}
+        <span className={styles.optionalBadge}>optional</span>
+      </p>
+      <p className={styles.optionalHint}>
+        Tell us about your yarn and how you knit to get an AI-powered needle
+        size suggestion.
+      </p>
+
+      <div className={styles.fieldGroup}>
+        <label htmlFor="fiberType" className={styles.label}>
+          Fiber Type
+        </label>
+        <div className={styles.selectWrapper}>
+          <select
+            id="fiberType"
+            className={styles.select}
+            value={fiberType}
+            onChange={(e) => setFiberType(e.target.value)}
+            disabled={loading}
+          >
+            <option value="">— skip —</option>
+            {FIBER_TYPES.map((f) => (
+              <option key={f.value} value={f.value}>
+                {f.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* <div className={styles.fieldGroup}>
+        <label htmlFor="tension" className={styles.label}>
+          Your Tension
+        </label>
+        <div className={styles.selectWrapper}>
+          <select
+            id="tension"
+            className={styles.select}
+            value={tension}
+            onChange={(e) => setTension(e.target.value)}
+            disabled={loading}
+          >
+            <option value="">— skip —</option>
+            {TENSION_OPTIONS.map((t) => (
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div> */}
 
       <button type="submit" className={styles.submitButton} disabled={loading}>
         {loading ? (

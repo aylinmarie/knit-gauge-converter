@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: var(--color-gray-300);
+  color: var(--color-gray-400);
   user-select: none;
 }
 
@@ -147,6 +147,28 @@
   line-height: 1.7;
   color: var(--color-gray-800);
   border-left: 3px solid var(--color-gray-200);
+  padding-left: 16px;
+}
+
+.needleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.needleLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-purple);
+}
+
+.needleText {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-gray-800);
+  border-left: 3px solid var(--color-purple);
   padding-left: 16px;
 }
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -15,14 +15,14 @@ interface EstimateAIResponse {
   reasoning: string;
 }
 
-// ── Clients (initialised lazily per request to keep edge-safe) ───────────────
+// ── Clients ──────────────────────────────────────────────────────────────────
 
-function getOpenAIClient(): OpenAI {
-  const apiKey = process.env.OPENAI_API_KEY;
+function getAnthropicClient(): Anthropic {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    throw new Error("OPENAI_API_KEY environment variable is not set.");
+    throw new Error("ANTHROPIC_API_KEY environment variable is not set.");
   }
-  return new OpenAI({ apiKey });
+  return new Anthropic({ apiKey });
 }
 
 function getSupabaseClient() {
@@ -80,64 +80,77 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 2. Call OpenAI with JSON mode
+  // 2. Call Claude with tool use to guarantee structured JSON output
   let aiResult: EstimateAIResponse;
   try {
-    const openai = getOpenAIClient();
+    const anthropic = getAnthropicClient();
 
-    const systemPrompt = `You are an expert knitting technical editor with decades of experience in yarn substitution and gauge adjustments. When given a pattern's original yarn weight and gauge, plus a knitter's substitute yarn weight, you calculate the estimated gauge the knitter should aim for.
-
-Respond ONLY with a valid JSON object matching exactly this schema:
-{
-  "estimatedGauge": <number — stitches per 4 inches, rounded to nearest 0.5>,
-  "reasoning": <string — 2–4 sentences explaining the technical basis for the estimate>
-}`;
-
-    const userPrompt = `Pattern yarn weight: ${describeWeight(patternYarnWeight)}
+    const response = await anthropic.messages.create({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1024,
+      tools: [
+        {
+          name: "return_gauge_estimate",
+          description:
+            "Return the estimated gauge and technical reasoning for a yarn substitution.",
+          input_schema: {
+            type: "object" as const,
+            properties: {
+              estimatedGauge: {
+                type: "number",
+                description:
+                  "Estimated stitches per 4 inches for the substitute yarn, rounded to the nearest 0.5",
+              },
+              reasoning: {
+                type: "string",
+                description:
+                  "2–4 sentences explaining the technical basis for the gauge estimate",
+              },
+            },
+            required: ["estimatedGauge", "reasoning"],
+          },
+        },
+      ],
+      tool_choice: { type: "tool", name: "return_gauge_estimate" },
+      system:
+        "You are an expert knitting technical editor with decades of experience in yarn substitution and gauge adjustments. When given a pattern's original yarn weight and gauge, plus a knitter's substitute yarn weight, calculate the estimated gauge the knitter should aim for.",
+      messages: [
+        {
+          role: "user",
+          content: `Pattern yarn weight: ${describeWeight(patternYarnWeight)}
 Pattern gauge: ${patternGauge} stitches per 4 inches
 Knitter's substitute yarn weight: ${describeWeight(userYarnWeight)}
 
-Calculate the estimated gauge (stitches per 4 inches) the knitter should target with their substitute yarn.`;
-
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
+Calculate the estimated gauge (stitches per 4 inches) the knitter should target with their substitute yarn.`,
+        },
       ],
-      temperature: 0.2,
-      max_tokens: 400,
     });
 
-    const raw = completion.choices[0]?.message?.content;
-    if (!raw) {
-      throw new Error("OpenAI returned an empty response.");
+    // tool_choice forces exactly one tool_use block
+    const toolUse = response.content.find((block) => block.type === "tool_use");
+    if (!toolUse || toolUse.type !== "tool_use") {
+      throw new Error("Claude did not return a tool_use block.");
     }
 
-    const parsed = JSON.parse(raw) as Partial<EstimateAIResponse>;
-
-    if (
-      typeof parsed.estimatedGauge !== "number" ||
-      typeof parsed.reasoning !== "string"
-    ) {
-      throw new Error("OpenAI response did not match the expected schema.");
+    const input = toolUse.input as Partial<EstimateAIResponse>;
+    if (typeof input.estimatedGauge !== "number" || typeof input.reasoning !== "string") {
+      throw new Error("Claude tool response did not match the expected schema.");
     }
 
     aiResult = {
-      estimatedGauge: parsed.estimatedGauge,
-      reasoning: parsed.reasoning,
+      estimatedGauge: input.estimatedGauge,
+      reasoning: input.reasoning,
     };
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown OpenAI error.";
-    console.error("[estimate] OpenAI error:", message);
+    const message = err instanceof Error ? err.message : "Unknown Claude error.";
+    console.error("[estimate] Claude error:", message);
     return NextResponse.json(
       { error: `AI estimation failed: ${message}` },
       { status: 502 }
     );
   }
 
-  // 3. Log to Supabase (non-blocking on failure — we still return the result)
+  // 3. Log to Supabase (non-blocking — we still return the result on DB failure)
   try {
     const supabase = getSupabaseClient();
     const { error: dbError } = await supabase.from("yarn_intelligence").insert([

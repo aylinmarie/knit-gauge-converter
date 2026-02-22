@@ -76,7 +76,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        Knitting Gauge Estimator — powered by OpenAI &amp; Supabase
+        Knitting Gauge Estimator — powered by Claude &amp; Supabase
       </footer>
     </div>
   );

@@ -1,10 +1,11 @@
 import styles from "./ResultsPanel.module.css";
 import type { EstimateResult } from "@/app/page";
 import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
+import { suggestNeedle } from "@/lib/needleSizes";
 
 // 4 inches = 10.16 cm; convert sts/4in → sts/10cm
 function toMetric(v: number): number {
-  return Math.round((v * (10 / 10.16)) * 2) / 2;
+  return Math.round(v * (10 / 10.16) * 2) / 2;
 }
 
 interface ResultsPanelProps {
@@ -14,7 +15,12 @@ interface ResultsPanelProps {
   unit: "imperial" | "metric";
 }
 
-export default function ResultsPanel({ result, loading, error, unit }: ResultsPanelProps) {
+export default function ResultsPanel({
+  result,
+  loading,
+  error,
+  unit,
+}: ResultsPanelProps) {
   if (loading) {
     return (
       <div className={styles.skeleton}>
@@ -37,7 +43,9 @@ export default function ResultsPanel({ result, loading, error, unit }: ResultsPa
   if (!result) {
     return (
       <div className={styles.empty}>
-        <div className={styles.emptyIcon} aria-hidden="true">◎</div>
+        <div className={styles.emptyIcon} aria-hidden="true">
+          ◎
+        </div>
         <p className={styles.emptyText}>
           Fill in the form and click &ldquo;Estimate Gauge&rdquo; to get your
           gauge recommendation.
@@ -50,8 +58,13 @@ export default function ResultsPanel({ result, loading, error, unit }: ResultsPa
   const gaugeUnit = isMetric ? "sts / 10 cm" : "sts / 4\u2033";
   const rowGaugeUnit = isMetric ? "rows / 10 cm" : "rows / 4\u2033";
 
-  const displayGauge = isMetric ? toMetric(result.estimatedGauge) : result.estimatedGauge;
-  const displayPatternGauge = isMetric ? toMetric(result.patternGauge) : result.patternGauge;
+  const needle = suggestNeedle(result.estimatedGauge);
+  const displayGauge = isMetric
+    ? toMetric(result.estimatedGauge)
+    : result.estimatedGauge;
+  const displayPatternGauge = isMetric
+    ? toMetric(result.patternGauge)
+    : result.patternGauge;
   const displayRowGauge =
     result.estimatedRowGauge !== undefined
       ? isMetric
@@ -70,7 +83,8 @@ export default function ResultsPanel({ result, loading, error, unit }: ResultsPa
           <div className={styles.rowGaugeInCard}>
             <span className={styles.rowGaugeInCardLabel}>Row gauge</span>
             <span className={styles.rowGaugeInCardValue}>
-              {displayRowGauge} <span className={styles.rowGaugeInCardUnit}>{rowGaugeUnit}</span>
+              {displayRowGauge}{" "}
+              <span className={styles.rowGaugeInCardUnit}>{rowGaugeUnit}</span>
             </span>
           </div>
         )}
@@ -80,7 +94,8 @@ export default function ResultsPanel({ result, loading, error, unit }: ResultsPa
         <div className={styles.summaryItem}>
           <span className={styles.summaryItemLabel}>Pattern Weight</span>
           <span className={styles.summaryItemValue}>
-            {YARN_WEIGHT_LABELS[result.patternYarnWeight] ?? result.patternYarnWeight}
+            {YARN_WEIGHT_LABELS[result.patternYarnWeight] ??
+              result.patternYarnWeight}
           </span>
         </div>
         <div className={styles.summaryItem}>
@@ -99,15 +114,22 @@ export default function ResultsPanel({ result, loading, error, unit }: ResultsPa
 
       <div className={styles.reasoningSection}>
         <span className={styles.reasoningLabel}>How we got there</span>
-        <p className={styles.reasoningText}>{result.reasoning}</p>
+        <p className={styles.reasoningText}>
+          {isMetric ? result.reasoningMetric : result.reasoning}
+        </p>
       </div>
 
-      {result.needleSuggestion && (
-        <div className={styles.needleSection}>
-          <span className={styles.needleLabel}>Needle recommendation</span>
-          <p className={styles.needleText}>{result.needleSuggestion}</p>
-        </div>
-      )}
+      <div className={styles.needleSection}>
+        <span className={styles.needleLabel}>Suggested starting needle</span>
+        <p className={styles.needleText}>
+          <strong>
+            US {needle.us} / {needle.metric}
+          </strong>{" "}
+          — cast on a swatch first to dial in your gauge before starting the
+          project. You'll probably need to adjust your needle size — go up if
+          you're getting too many stitches, down if too few.
+        </p>
+      </div>
     </div>
   );
 }

@@ -9,11 +9,11 @@ export interface EstimateResult {
   estimatedGauge: number;
   estimatedRowGauge?: number;
   reasoning: string;
+  reasoningMetric: string;
   patternYarnWeight: string;
   patternGauge: number;
   patternRowGauge?: number;
   userYarnWeight: string;
-  needleSuggestion?: string;
 }
 
 export default function Home() {
@@ -27,8 +27,6 @@ export default function Home() {
     patternGauge: number;
     patternRowGauge?: number;
     userYarnWeight: string;
-    fiberType?: string;
-    tension?: string;
   }) => {
     setLoading(true);
     setError(null);
@@ -51,11 +49,11 @@ export default function Home() {
         estimatedGauge: json.estimatedGauge,
         estimatedRowGauge: json.estimatedRowGauge,
         reasoning: json.reasoning,
+        reasoningMetric: json.reasoningMetric,
         patternYarnWeight: data.patternYarnWeight,
         patternGauge: data.patternGauge,
         patternRowGauge: data.patternRowGauge,
         userYarnWeight: data.userYarnWeight,
-        needleSuggestion: json.needleSuggestion,
       });
     } catch (err) {
       setError(

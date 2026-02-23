@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
 import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
 
@@ -10,15 +9,13 @@ interface EstimateRequestBody {
   patternGauge: number;
   patternRowGauge?: number;
   userYarnWeight: string;
-  fiberType?: string;
-  tension?: string;
 }
 
 interface EstimateResponse {
   estimatedGauge: number;
   estimatedRowGauge?: number;
   reasoning: string;
-  needleSuggestion?: string;
+  reasoningMetric: string;
 }
 
 // ── Allowed values (used for input validation) ────────────────────────────────
@@ -26,13 +23,6 @@ interface EstimateResponse {
 const ALLOWED_YARN_WEIGHTS = new Set([
   "lace", "super-fine", "fine", "light", "medium", "bulky", "super-bulky", "jumbo",
 ]);
-
-const ALLOWED_FIBER_TYPES = new Set([
-  "wool", "superwash-wool", "cotton", "acrylic", "alpaca",
-  "linen", "bamboo", "mohair-blend", "silk-blend",
-]);
-
-const ALLOWED_TENSIONS = new Set(["loose", "average", "tight"]);
 
 // ── Yarn weight data ─────────────────────────────────────────────────────────
 
@@ -68,6 +58,11 @@ function roundToHalf(n: number): number {
   return Math.round(n * 2) / 2;
 }
 
+// sts/4in → sts/10cm (for display in reasoning text)
+function toMetricDisplay(v: number): number {
+  return Math.round((v * (10 / 10.16)) * 2) / 2;
+}
+
 function estimateGauge(
   patternYarnWeight: string,
   patternGauge: number,
@@ -77,6 +72,7 @@ function estimateGauge(
   estimatedGauge: number;
   estimatedRowGauge?: number;
   reasoning: string;
+  reasoningMetric: string;
 } {
   const patternMidpoint = YARN_MIDPOINTS[patternYarnWeight];
   const userMidpoint    = YARN_MIDPOINTS[userYarnWeight];
@@ -100,46 +96,22 @@ function estimateGauge(
     }
   }
 
-  let reasoning: string;
-  if (patternYarnWeight === userYarnWeight) {
-    reasoning = `Good news — you're swapping like for like! Both yarns are ${patternLabel}, so your gauge should stay right around ${patternGauge} sts/4in. That said, fiber content and your personal tension can still nudge things a bit, so it's always worth knitting a quick swatch just to be sure.`;
-  } else {
+  const buildReasoning = (isMetric: boolean) => {
+    const unitLabel = isMetric ? "sts/10cm" : "sts/4in";
+    const fmt = (v: number) => isMetric ? toMetricDisplay(v) : v;
+    if (patternYarnWeight === userYarnWeight) {
+      return `Good news — you're swapping like for like! Both yarns are ${patternLabel}, so your gauge should stay right around ${fmt(patternGauge)} ${unitLabel}. That said, fiber content and your personal tension can still nudge things a bit, so it's always worth knitting a quick swatch just to be sure.`;
+    }
     const direction = userMidpoint < patternMidpoint ? "chunkier" : "finer";
-    reasoning = `Your yarn (${userLabel}) typically knits up to about ${userMidpoint} sts/4in, while the pattern calls for ${patternLabel} at around ${patternMidpoint} sts/4in. Since your yarn is ${direction}, we scaled the pattern's ${patternGauge} sts and landed on ${estimatedGauge} sts/4in as your target. You'll probably need to adjust your needle size — go up if you're getting too many stitches, down if too few — and always swatch first!`;
-  }
+    return `Your yarn (${userLabel}) typically knits up to about ${fmt(userMidpoint)} ${unitLabel}, while the pattern calls for ${patternLabel} at around ${fmt(patternMidpoint)} ${unitLabel}. Since your yarn is ${direction}, we scaled the pattern's ${fmt(patternGauge)} sts and landed on ${fmt(estimatedGauge)} ${unitLabel} as your target.`;
+  };
 
-  return { estimatedGauge, estimatedRowGauge, reasoning };
-}
-
-// ── Needle suggestion (Anthropic) ─────────────────────────────────────────────
-
-async function getNeedleSuggestion(
-  userYarnWeight: string,
-  estimatedGauge: number,
-  fiberType: string,
-  tension: string
-): Promise<string> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error("ANTHROPIC_API_KEY is not set.");
-
-  const anthropic = new Anthropic({ apiKey });
-
-  const message = await anthropic.messages.create({
-    model: "claude-haiku-4-5-20251001",
-    max_tokens: 120,
-    system:
-      "You are a knitting expert. Give a concise needle size recommendation (US size + metric) in 1–2 friendly sentences. Always mention that swatching is the final check.",
-    messages: [
-      {
-        role: "user",
-        content: `Yarn weight: ${YARN_WEIGHT_LABELS[userYarnWeight] ?? userYarnWeight}. Target gauge: ${estimatedGauge} sts/4in. Fiber: ${fiberType}. Knitter tension: ${tension}. What needle size should they start with?`,
-      },
-    ],
-  });
-
-  const block = message.content[0];
-  if (block.type !== "text") throw new Error("Unexpected response from Anthropic.");
-  return block.text.trim();
+  return {
+    estimatedGauge,
+    estimatedRowGauge,
+    reasoning: buildReasoning(false),
+    reasoningMetric: buildReasoning(true),
+  };
 }
 
 // ── Supabase ─────────────────────────────────────────────────────────────────
@@ -166,7 +138,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const { patternYarnWeight, patternGauge, patternRowGauge, userYarnWeight, fiberType, tension } = body;
+  const { patternYarnWeight, patternGauge, patternRowGauge, userYarnWeight } = body;
 
   if (!patternYarnWeight || typeof patternGauge !== "number" || !userYarnWeight) {
     return NextResponse.json(
@@ -195,15 +167,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid yarn weight value." }, { status: 400 });
   }
 
-  if (fiberType && !ALLOWED_FIBER_TYPES.has(fiberType)) {
-    return NextResponse.json({ error: "Invalid fiber type value." }, { status: 400 });
-  }
-
-  if (tension && !ALLOWED_TENSIONS.has(tension)) {
-    return NextResponse.json({ error: "Invalid tension value." }, { status: 400 });
-  }
-
-  // 2. Calculate gauge estimate (instant, no API)
+  // 2. Calculate gauge estimate
   let result: EstimateResponse;
   try {
     result = estimateGauge(patternYarnWeight, patternGauge, userYarnWeight, patternRowGauge);
@@ -212,22 +176,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  // 3. Needle suggestion via Anthropic (only if fiber + tension were provided)
-  if (fiberType && tension) {
-    try {
-      result.needleSuggestion = await getNeedleSuggestion(
-        userYarnWeight,
-        result.estimatedGauge,
-        fiberType,
-        tension
-      );
-    } catch (err) {
-      console.warn("[estimate] Needle suggestion error:", err instanceof Error ? err.message : err);
-      // non-fatal — gauge result still returns without it
-    }
-  }
-
-  // 4. Log to Supabase (non-blocking)
+  // 3. Log to Supabase (non-blocking)
   try {
     const supabase = getSupabaseClient();
     const { error: dbError } = await supabase.from("yarn_intelligence").insert([
@@ -245,6 +194,6 @@ export async function POST(req: NextRequest) {
     console.warn("[estimate] Supabase client error:", err);
   }
 
-  // 5. Return result
+  // 4. Return result
   return NextResponse.json(result, { status: 200 });
 }

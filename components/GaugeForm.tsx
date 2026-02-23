@@ -14,18 +14,6 @@ const YARN_WEIGHTS = [
   { value: "jumbo", label: "Jumbo (7)" },
 ];
 
-const FIBER_TYPES = [
-  { value: "wool", label: "Wool" },
-  { value: "superwash-wool", label: "Superwash Wool" },
-  { value: "cotton", label: "Cotton" },
-  { value: "acrylic", label: "Acrylic" },
-  { value: "alpaca", label: "Alpaca" },
-  { value: "linen", label: "Linen" },
-  { value: "bamboo", label: "Bamboo" },
-  { value: "mohair-blend", label: "Mohair Blend" },
-  { value: "silk-blend", label: "Silk Blend" },
-];
-
 // 4 inches = 10.16 cm; convert sts/10cm → sts/4in
 const metricToImperial = (v: number) => v * (10.16 / 10);
 
@@ -35,8 +23,6 @@ interface GaugeFormProps {
     patternGauge: number;
     patternRowGauge?: number;
     userYarnWeight: string;
-    fiberType?: string;
-    tension?: string;
   }) => void;
   loading: boolean;
   unit: "imperial" | "metric";
@@ -47,8 +33,6 @@ export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
   const [patternGauge, setPatternGauge] = useState<string>("18");
   const [patternRowGauge, setPatternRowGauge] = useState<string>("");
   const [userYarnWeight, setUserYarnWeight] = useState("light");
-  const [fiberType, setFiberType] = useState("");
-  const [tension, setTension] = useState("");
 
   const gaugeUnit = unit === "metric" ? "sts per 10 cm" : "sts per 4 inches";
   const rowGaugeUnit = unit === "metric" ? "rows per 10 cm" : "rows per 4 inches";
@@ -74,8 +58,6 @@ export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
       patternGauge: gaugeImperial,
       patternRowGauge: rowGaugeImperial,
       userYarnWeight,
-      fiberType: fiberType || undefined,
-      tension: tension || undefined,
     });
   };
 
@@ -172,39 +154,6 @@ export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
             {YARN_WEIGHTS.map((w) => (
               <option key={w.value} value={w.value}>
                 {w.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className={styles.divider} />
-
-      <p className={styles.optionalHeading}>
-        Needle recommendation{" "}
-        <span className={styles.optionalBadge}>optional</span>
-      </p>
-      <p className={styles.optionalHint}>
-        Tell us about your yarn and how you knit to get an AI-powered needle
-        size suggestion.
-      </p>
-
-      <div className={styles.fieldGroup}>
-        <label htmlFor="fiberType" className={styles.label}>
-          Fiber Type
-        </label>
-        <div className={styles.selectWrapper}>
-          <select
-            id="fiberType"
-            className={styles.select}
-            value={fiberType}
-            onChange={(e) => setFiberType(e.target.value)}
-            disabled={loading}
-          >
-            <option value="">— skip —</option>
-            {FIBER_TYPES.map((f) => (
-              <option key={f.value} value={f.value}>
-                {f.label}
               </option>
             ))}
           </select>

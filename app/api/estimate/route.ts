@@ -9,7 +9,6 @@ interface EstimateRequestBody {
   patternYarnWeight: string;
   patternGauge: number;
   patternRowGauge?: number;
-  patternStitchCount?: number;
   userYarnWeight: string;
   fiberType?: string;
   tension?: string;
@@ -18,7 +17,6 @@ interface EstimateRequestBody {
 interface EstimateResponse {
   estimatedGauge: number;
   estimatedRowGauge?: number;
-  adjustedStitchCount?: number;
   reasoning: string;
   needleSuggestion?: string;
 }
@@ -75,11 +73,9 @@ function estimateGauge(
   patternGauge: number,
   userYarnWeight: string,
   patternRowGauge?: number,
-  patternStitchCount?: number,
 ): {
   estimatedGauge: number;
   estimatedRowGauge?: number;
-  adjustedStitchCount?: number;
   reasoning: string;
 } {
   const patternMidpoint = YARN_MIDPOINTS[patternYarnWeight];
@@ -104,12 +100,6 @@ function estimateGauge(
     }
   }
 
-  // Stitch count recalculator
-  let adjustedStitchCount: number | undefined;
-  if (patternStitchCount !== undefined) {
-    adjustedStitchCount = Math.round(patternStitchCount * ratio);
-  }
-
   let reasoning: string;
   if (patternYarnWeight === userYarnWeight) {
     reasoning = `Good news — you're swapping like for like! Both yarns are ${patternLabel}, so your gauge should stay right around ${patternGauge} sts/4in. That said, fiber content and your personal tension can still nudge things a bit, so it's always worth knitting a quick swatch just to be sure.`;
@@ -118,7 +108,7 @@ function estimateGauge(
     reasoning = `Your yarn (${userLabel}) typically knits up to about ${userMidpoint} sts/4in, while the pattern calls for ${patternLabel} at around ${patternMidpoint} sts/4in. Since your yarn is ${direction}, we scaled the pattern's ${patternGauge} sts and landed on ${estimatedGauge} sts/4in as your target. You'll probably need to adjust your needle size — go up if you're getting too many stitches, down if too few — and always swatch first!`;
   }
 
-  return { estimatedGauge, estimatedRowGauge, adjustedStitchCount, reasoning };
+  return { estimatedGauge, estimatedRowGauge, reasoning };
 }
 
 // ── Needle suggestion (Anthropic) ─────────────────────────────────────────────
@@ -176,7 +166,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const { patternYarnWeight, patternGauge, patternRowGauge, patternStitchCount, userYarnWeight, fiberType, tension } = body;
+  const { patternYarnWeight, patternGauge, patternRowGauge, userYarnWeight, fiberType, tension } = body;
 
   if (!patternYarnWeight || typeof patternGauge !== "number" || !userYarnWeight) {
     return NextResponse.json(
@@ -201,15 +191,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  if (patternStitchCount !== undefined) {
-    if (typeof patternStitchCount !== "number" || patternStitchCount <= 0 || patternStitchCount > 10000) {
-      return NextResponse.json(
-        { error: "patternStitchCount must be between 1 and 10000." },
-        { status: 400 }
-      );
-    }
-  }
-
   if (!ALLOWED_YARN_WEIGHTS.has(patternYarnWeight) || !ALLOWED_YARN_WEIGHTS.has(userYarnWeight)) {
     return NextResponse.json({ error: "Invalid yarn weight value." }, { status: 400 });
   }
@@ -225,7 +206,7 @@ export async function POST(req: NextRequest) {
   // 2. Calculate gauge estimate (instant, no API)
   let result: EstimateResponse;
   try {
-    result = estimateGauge(patternYarnWeight, patternGauge, userYarnWeight, patternRowGauge, patternStitchCount);
+    result = estimateGauge(patternYarnWeight, patternGauge, userYarnWeight, patternRowGauge);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Calculation error.";
     return NextResponse.json({ error: message }, { status: 400 });

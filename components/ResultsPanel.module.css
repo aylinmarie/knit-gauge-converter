@@ -150,37 +150,6 @@
   margin-left: 2px;
 }
 
-.stitchCountCard {
-  border: 2px solid var(--color-purple);
-  border-radius: var(--radius-md);
-  padding: 20px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.stitchCountLabel {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-purple);
-}
-
-.stitchCountValue {
-  font-size: 2.25rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--color-black);
-  line-height: 1;
-  margin: 6px 0 4px;
-}
-
-.stitchCountSub {
-  font-size: 0.8125rem;
-  color: var(--color-gray-600);
-}
-
 .summaryRow {
   display: flex;
   gap: 24px;

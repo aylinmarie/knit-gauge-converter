@@ -8,12 +8,10 @@ import ResultsPanel from "@/components/ResultsPanel";
 export interface EstimateResult {
   estimatedGauge: number;
   estimatedRowGauge?: number;
-  adjustedStitchCount?: number;
   reasoning: string;
   patternYarnWeight: string;
   patternGauge: number;
   patternRowGauge?: number;
-  patternStitchCount?: number;
   userYarnWeight: string;
   needleSuggestion?: string;
 }
@@ -28,7 +26,6 @@ export default function Home() {
     patternYarnWeight: string;
     patternGauge: number;
     patternRowGauge?: number;
-    patternStitchCount?: number;
     userYarnWeight: string;
     fiberType?: string;
     tension?: string;
@@ -53,12 +50,10 @@ export default function Home() {
       setResult({
         estimatedGauge: json.estimatedGauge,
         estimatedRowGauge: json.estimatedRowGauge,
-        adjustedStitchCount: json.adjustedStitchCount,
         reasoning: json.reasoning,
         patternYarnWeight: data.patternYarnWeight,
         patternGauge: data.patternGauge,
         patternRowGauge: data.patternRowGauge,
-        patternStitchCount: data.patternStitchCount,
         userYarnWeight: data.userYarnWeight,
         needleSuggestion: json.needleSuggestion,
       });

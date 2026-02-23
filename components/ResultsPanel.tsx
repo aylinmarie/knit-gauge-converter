@@ -76,16 +76,6 @@ export default function ResultsPanel({ result, loading, error, unit }: ResultsPa
         )}
       </div>
 
-      {result.adjustedStitchCount !== undefined && (
-        <div className={styles.stitchCountCard}>
-          <span className={styles.stitchCountLabel}>Adjusted Stitch Count</span>
-          <div className={styles.stitchCountValue}>{result.adjustedStitchCount}</div>
-          <span className={styles.stitchCountSub}>
-            stitches (scaled from {result.patternStitchCount} in the original pattern)
-          </span>
-        </div>
-      )}
-
       <div className={styles.summaryRow}>
         <div className={styles.summaryItem}>
           <span className={styles.summaryItemLabel}>Pattern Weight</span>

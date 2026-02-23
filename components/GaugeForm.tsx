@@ -34,7 +34,6 @@ interface GaugeFormProps {
     patternYarnWeight: string;
     patternGauge: number;
     patternRowGauge?: number;
-    patternStitchCount?: number;
     userYarnWeight: string;
     fiberType?: string;
     tension?: string;
@@ -47,7 +46,6 @@ export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
   const [patternYarnWeight, setPatternYarnWeight] = useState("medium");
   const [patternGauge, setPatternGauge] = useState<string>("18");
   const [patternRowGauge, setPatternRowGauge] = useState<string>("");
-  const [patternStitchCount, setPatternStitchCount] = useState<string>("");
   const [userYarnWeight, setUserYarnWeight] = useState("light");
   const [fiberType, setFiberType] = useState("");
   const [tension, setTension] = useState("");
@@ -71,17 +69,10 @@ export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
       }
     }
 
-    let stitchCount: number | undefined;
-    if (patternStitchCount !== "") {
-      const sc = parseInt(patternStitchCount, 10);
-      if (!isNaN(sc) && sc > 0) stitchCount = sc;
-    }
-
     onSubmit({
       patternYarnWeight,
       patternGauge: gaugeImperial,
       patternRowGauge: rowGaugeImperial,
-      patternStitchCount: stitchCount,
       userYarnWeight,
       fiberType: fiberType || undefined,
       tension: tension || undefined,
@@ -185,28 +176,6 @@ export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
             ))}
           </select>
         </div>
-      </div>
-
-      <div className={styles.fieldGroup}>
-        <label htmlFor="patternStitchCount" className={styles.label}>
-          Pattern Stitch Count
-          <span className={styles.labelHint}>
-            Total stitches for a section (e.g. cast-on){" "}
-            <span className={styles.optionalInline}>optional</span>
-          </span>
-        </label>
-        <input
-          id="patternStitchCount"
-          type="number"
-          className={styles.input}
-          value={patternStitchCount}
-          onChange={(e) => setPatternStitchCount(e.target.value)}
-          min="1"
-          max="10000"
-          step="1"
-          placeholder="e.g. 120"
-          disabled={loading}
-        />
       </div>
 
       <div className={styles.divider} />

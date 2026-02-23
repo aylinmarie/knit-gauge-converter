@@ -7,9 +7,13 @@ import ResultsPanel from "@/components/ResultsPanel";
 
 export interface EstimateResult {
   estimatedGauge: number;
+  estimatedRowGauge?: number;
+  adjustedStitchCount?: number;
   reasoning: string;
   patternYarnWeight: string;
   patternGauge: number;
+  patternRowGauge?: number;
+  patternStitchCount?: number;
   userYarnWeight: string;
   needleSuggestion?: string;
 }
@@ -18,10 +22,13 @@ export default function Home() {
   const [result, setResult] = useState<EstimateResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [unit, setUnit] = useState<"imperial" | "metric">("imperial");
 
   const handleSubmit = async (data: {
     patternYarnWeight: string;
     patternGauge: number;
+    patternRowGauge?: number;
+    patternStitchCount?: number;
     userYarnWeight: string;
     fiberType?: string;
     tension?: string;
@@ -45,9 +52,13 @@ export default function Home() {
       const json = await response.json();
       setResult({
         estimatedGauge: json.estimatedGauge,
+        estimatedRowGauge: json.estimatedRowGauge,
+        adjustedStitchCount: json.adjustedStitchCount,
         reasoning: json.reasoning,
         patternYarnWeight: data.patternYarnWeight,
         patternGauge: data.patternGauge,
+        patternRowGauge: data.patternRowGauge,
+        patternStitchCount: data.patternStitchCount,
         userYarnWeight: data.userYarnWeight,
         needleSuggestion: json.needleSuggestion,
       });
@@ -63,21 +74,32 @@ export default function Home() {
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
-        <h1 className={styles.headerTitle}>Knitting Gauge Estimator</h1>
-        <span className={styles.headerSubtitle}>
-          Gauge conversion + AI needle recommendations for yarn substitution
-        </span>
+        <div className={styles.headerLeft}>
+          <h1 className={styles.headerTitle}>Knitting Gauge Estimator</h1>
+          <span className={styles.headerSubtitle}>
+            Gauge conversion + AI needle recommendations for yarn substitution
+          </span>
+        </div>
+        <button
+          className={styles.unitToggle}
+          onClick={() => setUnit((u) => (u === "imperial" ? "metric" : "imperial"))}
+          aria-label="Toggle between imperial and metric units"
+        >
+          <span className={unit === "imperial" ? styles.unitActive : styles.unitInactive}>in</span>
+          <span className={styles.unitSep}>/</span>
+          <span className={unit === "metric" ? styles.unitActive : styles.unitInactive}>cm</span>
+        </button>
       </header>
 
       <main className={styles.main}>
         <section className={styles.leftColumn}>
           <p className={styles.columnLabel}>Inputs</p>
-          <GaugeForm onSubmit={handleSubmit} loading={loading} />
+          <GaugeForm onSubmit={handleSubmit} loading={loading} unit={unit} />
         </section>
 
         <section className={styles.rightColumn}>
           <p className={styles.columnLabel}>Results</p>
-          <ResultsPanel result={result} loading={loading} error={error} />
+          <ResultsPanel result={result} loading={loading} error={error} unit={unit} />
         </section>
       </main>
 

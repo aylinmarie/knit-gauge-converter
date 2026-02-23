@@ -8,6 +8,8 @@ import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
 interface EstimateRequestBody {
   patternYarnWeight: string;
   patternGauge: number;
+  patternRowGauge?: number;
+  patternStitchCount?: number;
   userYarnWeight: string;
   fiberType?: string;
   tension?: string;
@@ -15,6 +17,8 @@ interface EstimateRequestBody {
 
 interface EstimateResponse {
   estimatedGauge: number;
+  estimatedRowGauge?: number;
+  adjustedStitchCount?: number;
   reasoning: string;
   needleSuggestion?: string;
 }
@@ -46,6 +50,19 @@ const YARN_MIDPOINTS: Record<string, number> = {
   jumbo:          5,
 };
 
+// Standard midpoint row gauges (rows per 4 inches) per CYC weight category
+// Row gauge is typically ~1.3–1.4× stitch gauge for stockinette
+const ROW_MIDPOINTS: Record<string, number> = {
+  lace:          48,
+  "super-fine":  40,
+  fine:          32,
+  light:         30,
+  medium:        24,
+  bulky:         19,
+  "super-bulky": 13,
+  jumbo:          7,
+};
+
 
 // ── Gauge calculation ─────────────────────────────────────────────────────────
 
@@ -56,8 +73,15 @@ function roundToHalf(n: number): number {
 function estimateGauge(
   patternYarnWeight: string,
   patternGauge: number,
-  userYarnWeight: string
-): { estimatedGauge: number; reasoning: string } {
+  userYarnWeight: string,
+  patternRowGauge?: number,
+  patternStitchCount?: number,
+): {
+  estimatedGauge: number;
+  estimatedRowGauge?: number;
+  adjustedStitchCount?: number;
+  reasoning: string;
+} {
   const patternMidpoint = YARN_MIDPOINTS[patternYarnWeight];
   const userMidpoint    = YARN_MIDPOINTS[userYarnWeight];
 
@@ -65,9 +89,26 @@ function estimateGauge(
     throw new Error(`Unknown yarn weight: ${!patternMidpoint ? patternYarnWeight : userYarnWeight}`);
   }
 
-  const estimatedGauge = roundToHalf(patternGauge * (userMidpoint / patternMidpoint));
+  const ratio = userMidpoint / patternMidpoint;
+  const estimatedGauge = roundToHalf(patternGauge * ratio);
   const patternLabel   = YARN_WEIGHT_LABELS[patternYarnWeight];
   const userLabel      = YARN_WEIGHT_LABELS[userYarnWeight];
+
+  // Row gauge
+  let estimatedRowGauge: number | undefined;
+  if (patternRowGauge !== undefined) {
+    const patternRowMidpoint = ROW_MIDPOINTS[patternYarnWeight];
+    const userRowMidpoint    = ROW_MIDPOINTS[userYarnWeight];
+    if (patternRowMidpoint && userRowMidpoint) {
+      estimatedRowGauge = roundToHalf(patternRowGauge * (userRowMidpoint / patternRowMidpoint));
+    }
+  }
+
+  // Stitch count recalculator
+  let adjustedStitchCount: number | undefined;
+  if (patternStitchCount !== undefined) {
+    adjustedStitchCount = Math.round(patternStitchCount * ratio);
+  }
 
   let reasoning: string;
   if (patternYarnWeight === userYarnWeight) {
@@ -77,7 +118,7 @@ function estimateGauge(
     reasoning = `Your yarn (${userLabel}) typically knits up to about ${userMidpoint} sts/4in, while the pattern calls for ${patternLabel} at around ${patternMidpoint} sts/4in. Since your yarn is ${direction}, we scaled the pattern's ${patternGauge} sts and landed on ${estimatedGauge} sts/4in as your target. You'll probably need to adjust your needle size — go up if you're getting too many stitches, down if too few — and always swatch first!`;
   }
 
-  return { estimatedGauge, reasoning };
+  return { estimatedGauge, estimatedRowGauge, adjustedStitchCount, reasoning };
 }
 
 // ── Needle suggestion (Anthropic) ─────────────────────────────────────────────
@@ -135,7 +176,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const { patternYarnWeight, patternGauge, userYarnWeight, fiberType, tension } = body;
+  const { patternYarnWeight, patternGauge, patternRowGauge, patternStitchCount, userYarnWeight, fiberType, tension } = body;
 
   if (!patternYarnWeight || typeof patternGauge !== "number" || !userYarnWeight) {
     return NextResponse.json(
@@ -149,6 +190,24 @@ export async function POST(req: NextRequest) {
       { error: "patternGauge must be between 1 and 100." },
       { status: 400 }
     );
+  }
+
+  if (patternRowGauge !== undefined) {
+    if (typeof patternRowGauge !== "number" || patternRowGauge <= 0 || patternRowGauge > 200) {
+      return NextResponse.json(
+        { error: "patternRowGauge must be between 1 and 200." },
+        { status: 400 }
+      );
+    }
+  }
+
+  if (patternStitchCount !== undefined) {
+    if (typeof patternStitchCount !== "number" || patternStitchCount <= 0 || patternStitchCount > 10000) {
+      return NextResponse.json(
+        { error: "patternStitchCount must be between 1 and 10000." },
+        { status: 400 }
+      );
+    }
   }
 
   if (!ALLOWED_YARN_WEIGHTS.has(patternYarnWeight) || !ALLOWED_YARN_WEIGHTS.has(userYarnWeight)) {
@@ -166,7 +225,7 @@ export async function POST(req: NextRequest) {
   // 2. Calculate gauge estimate (instant, no API)
   let result: EstimateResponse;
   try {
-    result = estimateGauge(patternYarnWeight, patternGauge, userYarnWeight);
+    result = estimateGauge(patternYarnWeight, patternGauge, userYarnWeight, patternRowGauge, patternStitchCount);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Calculation error.";
     return NextResponse.json({ error: message }, { status: 400 });

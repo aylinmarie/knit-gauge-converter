@@ -2,13 +2,19 @@ import styles from "./ResultsPanel.module.css";
 import type { EstimateResult } from "@/app/page";
 import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
 
+// 4 inches = 10.16 cm; convert sts/4in → sts/10cm
+function toMetric(v: number): number {
+  return Math.round((v * (10 / 10.16)) * 2) / 2;
+}
+
 interface ResultsPanelProps {
   result: EstimateResult | null;
   loading: boolean;
   error: string | null;
+  unit: "imperial" | "metric";
 }
 
-export default function ResultsPanel({ result, loading, error }: ResultsPanelProps) {
+export default function ResultsPanel({ result, loading, error, unit }: ResultsPanelProps) {
   if (loading) {
     return (
       <div className={styles.skeleton}>
@@ -40,13 +46,45 @@ export default function ResultsPanel({ result, loading, error }: ResultsPanelPro
     );
   }
 
+  const isMetric = unit === "metric";
+  const gaugeUnit = isMetric ? "sts / 10 cm" : "sts / 4\u2033";
+  const rowGaugeUnit = isMetric ? "rows / 10 cm" : "rows / 4\u2033";
+
+  const displayGauge = isMetric ? toMetric(result.estimatedGauge) : result.estimatedGauge;
+  const displayPatternGauge = isMetric ? toMetric(result.patternGauge) : result.patternGauge;
+  const displayRowGauge =
+    result.estimatedRowGauge !== undefined
+      ? isMetric
+        ? toMetric(result.estimatedRowGauge)
+        : result.estimatedRowGauge
+      : undefined;
+
   return (
     <div className={styles.results}>
       <div className={styles.gaugeCard}>
-        <span className={styles.gaugeCardLabel}>Estimated Gauge</span>
-        <div className={styles.gaugeCardValue}>{result.estimatedGauge}</div>
-        <span className={styles.gaugeCardUnit}>stitches per 4 inches</span>
+        <span className={styles.gaugeCardLabel}>Estimated Stitch Gauge</span>
+        <div className={styles.gaugeCardValue}>{displayGauge}</div>
+        <span className={styles.gaugeCardUnit}>{gaugeUnit}</span>
+
+        {displayRowGauge !== undefined && (
+          <div className={styles.rowGaugeInCard}>
+            <span className={styles.rowGaugeInCardLabel}>Row gauge</span>
+            <span className={styles.rowGaugeInCardValue}>
+              {displayRowGauge} <span className={styles.rowGaugeInCardUnit}>{rowGaugeUnit}</span>
+            </span>
+          </div>
+        )}
       </div>
+
+      {result.adjustedStitchCount !== undefined && (
+        <div className={styles.stitchCountCard}>
+          <span className={styles.stitchCountLabel}>Adjusted Stitch Count</span>
+          <div className={styles.stitchCountValue}>{result.adjustedStitchCount}</div>
+          <span className={styles.stitchCountSub}>
+            stitches (scaled from {result.patternStitchCount} in the original pattern)
+          </span>
+        </div>
+      )}
 
       <div className={styles.summaryRow}>
         <div className={styles.summaryItem}>
@@ -64,7 +102,7 @@ export default function ResultsPanel({ result, loading, error }: ResultsPanelPro
         <div className={styles.summaryItem}>
           <span className={styles.summaryItemLabel}>Pattern Gauge</span>
           <span className={styles.summaryItemValue}>
-            {result.patternGauge} st / 4&Prime;
+            {displayPatternGauge} {isMetric ? "st / 10cm" : "st / 4\u2033"}
           </span>
         </div>
       </div>

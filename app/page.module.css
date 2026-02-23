@@ -14,9 +14,16 @@
   border-bottom: 2px solid var(--color-black);
   padding: 24px 48px;
   display: flex;
-  flex-direction: column;
-  align-items: baseline;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .headerTitle {
@@ -99,6 +106,41 @@
     }
   }
 
+.unitToggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  background-color: var(--color-gray-100);
+  border: 1.5px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.unitToggle:hover {
+  border-color: var(--color-purple);
+}
+
+.unitActive {
+  color: var(--color-purple);
+  font-weight: 700;
+}
+
+.unitInactive {
+  color: var(--color-gray-400);
+}
+
+.unitSep {
+  color: var(--color-gray-300);
+  margin: 0 2px;
+}
+
 .footer a {
   color: var(--color-purple);
   text-decoration: underline;
@@ -119,8 +161,9 @@
 
   .header {
     padding: 20px 24px;
-    flex-direction: column;
-    gap: 4px;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
   }
 
   .main {

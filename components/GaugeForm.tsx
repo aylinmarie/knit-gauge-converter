@@ -26,43 +26,62 @@ const FIBER_TYPES = [
   { value: "silk-blend", label: "Silk Blend" },
 ];
 
-const TENSION_OPTIONS = [
-  {
-    value: "loose",
-    label: "Loose — my stitches tend to be bigger than average",
-  },
-  { value: "average", label: "Average — I usually match the pattern gauge" },
-  {
-    value: "tight",
-    label: "Tight — my stitches tend to be smaller than average",
-  },
-];
+// 4 inches = 10.16 cm; convert sts/10cm → sts/4in
+const metricToImperial = (v: number) => v * (10.16 / 10);
 
 interface GaugeFormProps {
   onSubmit: (data: {
     patternYarnWeight: string;
     patternGauge: number;
+    patternRowGauge?: number;
+    patternStitchCount?: number;
     userYarnWeight: string;
     fiberType?: string;
     tension?: string;
   }) => void;
   loading: boolean;
+  unit: "imperial" | "metric";
 }
 
-export default function GaugeForm({ onSubmit, loading }: GaugeFormProps) {
+export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
   const [patternYarnWeight, setPatternYarnWeight] = useState("medium");
   const [patternGauge, setPatternGauge] = useState<string>("18");
+  const [patternRowGauge, setPatternRowGauge] = useState<string>("");
+  const [patternStitchCount, setPatternStitchCount] = useState<string>("");
   const [userYarnWeight, setUserYarnWeight] = useState("light");
   const [fiberType, setFiberType] = useState("");
   const [tension, setTension] = useState("");
+
+  const gaugeUnit = unit === "metric" ? "sts per 10 cm" : "sts per 4 inches";
+  const rowGaugeUnit = unit === "metric" ? "rows per 10 cm" : "rows per 4 inches";
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const gaugeNum = parseFloat(patternGauge);
     if (isNaN(gaugeNum) || gaugeNum <= 0) return;
+
+    // Convert metric inputs to imperial for the API (which always works in sts/4in)
+    const gaugeImperial = unit === "metric" ? metricToImperial(gaugeNum) : gaugeNum;
+
+    let rowGaugeImperial: number | undefined;
+    if (patternRowGauge !== "") {
+      const rowNum = parseFloat(patternRowGauge);
+      if (!isNaN(rowNum) && rowNum > 0) {
+        rowGaugeImperial = unit === "metric" ? metricToImperial(rowNum) : rowNum;
+      }
+    }
+
+    let stitchCount: number | undefined;
+    if (patternStitchCount !== "") {
+      const sc = parseInt(patternStitchCount, 10);
+      if (!isNaN(sc) && sc > 0) stitchCount = sc;
+    }
+
     onSubmit({
       patternYarnWeight,
-      patternGauge: gaugeNum,
+      patternGauge: gaugeImperial,
+      patternRowGauge: rowGaugeImperial,
+      patternStitchCount: stitchCount,
       userYarnWeight,
       fiberType: fiberType || undefined,
       tension: tension || undefined,
@@ -96,26 +115,49 @@ export default function GaugeForm({ onSubmit, loading }: GaugeFormProps) {
         </div>
       </div>
 
-      <div className={styles.fieldGroup}>
-        <label htmlFor="patternGauge" className={styles.label}>
-          Pattern Gauge
-          <span className={styles.labelHint}>
-            Stitches per 4 inches (as written in the pattern)
-          </span>
-        </label>
-        <input
-          id="patternGauge"
-          type="number"
-          className={styles.input}
-          value={patternGauge}
-          onChange={(e) => setPatternGauge(e.target.value)}
-          min="1"
-          max="100"
-          step="0.5"
-          placeholder="e.g. 18"
-          disabled={loading}
-          required
-        />
+      <div className={styles.gaugeRow}>
+        <div className={styles.fieldGroup}>
+          <label htmlFor="patternGauge" className={styles.label}>
+            Stitch Gauge
+            <span className={styles.labelHint}>
+              {gaugeUnit}
+            </span>
+          </label>
+          <input
+            id="patternGauge"
+            type="number"
+            className={styles.input}
+            value={patternGauge}
+            onChange={(e) => setPatternGauge(e.target.value)}
+            min="1"
+            max={unit === "metric" ? "98" : "100"}
+            step="0.5"
+            placeholder={unit === "metric" ? "e.g. 18" : "e.g. 18"}
+            disabled={loading}
+            required
+          />
+        </div>
+
+        <div className={styles.fieldGroup}>
+          <label htmlFor="patternRowGauge" className={styles.label}>
+            Row Gauge
+            <span className={styles.labelHint}>
+              {rowGaugeUnit} <span className={styles.optionalInline}>optional</span>
+            </span>
+          </label>
+          <input
+            id="patternRowGauge"
+            type="number"
+            className={styles.input}
+            value={patternRowGauge}
+            onChange={(e) => setPatternRowGauge(e.target.value)}
+            min="1"
+            max={unit === "metric" ? "196" : "200"}
+            step="0.5"
+            placeholder={unit === "metric" ? "e.g. 24" : "e.g. 24"}
+            disabled={loading}
+          />
+        </div>
       </div>
 
       <div className={styles.divider} />
@@ -143,6 +185,28 @@ export default function GaugeForm({ onSubmit, loading }: GaugeFormProps) {
             ))}
           </select>
         </div>
+      </div>
+
+      <div className={styles.fieldGroup}>
+        <label htmlFor="patternStitchCount" className={styles.label}>
+          Pattern Stitch Count
+          <span className={styles.labelHint}>
+            Total stitches for a section (e.g. cast-on){" "}
+            <span className={styles.optionalInline}>optional</span>
+          </span>
+        </label>
+        <input
+          id="patternStitchCount"
+          type="number"
+          className={styles.input}
+          value={patternStitchCount}
+          onChange={(e) => setPatternStitchCount(e.target.value)}
+          min="1"
+          max="10000"
+          step="1"
+          placeholder="e.g. 120"
+          disabled={loading}
+        />
       </div>
 
       <div className={styles.divider} />
@@ -177,28 +241,6 @@ export default function GaugeForm({ onSubmit, loading }: GaugeFormProps) {
           </select>
         </div>
       </div>
-
-      {/* <div className={styles.fieldGroup}>
-        <label htmlFor="tension" className={styles.label}>
-          Your Tension
-        </label>
-        <div className={styles.selectWrapper}>
-          <select
-            id="tension"
-            className={styles.select}
-            value={tension}
-            onChange={(e) => setTension(e.target.value)}
-            disabled={loading}
-          >
-            <option value="">— skip —</option>
-            {TENSION_OPTIONS.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div> */}
 
       <button type="submit" className={styles.submitButton} disabled={loading}>
         {loading ? (

@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import GaugeForm from "@/components/GaugeForm";
 import ResultsPanel from "@/components/ResultsPanel";
+import StitchConverter from "@/components/StitchConverter";
 
 export interface EstimateResult {
   estimatedGauge: number;
@@ -70,34 +71,61 @@ export default function Home() {
         <div className={styles.headerLeft}>
           <h1 className={styles.headerTitle}>Knitting Gauge Estimator</h1>
           <span className={styles.headerSubtitle}>
-            Gauge conversion + AI needle recommendations for yarn substitution
+            Gauge estimator, pattern stitch conversion + needle recommendations
+            for yarn substitution
           </span>
         </div>
         <button
           className={styles.unitToggle}
-          onClick={() => setUnit((u) => (u === "imperial" ? "metric" : "imperial"))}
+          onClick={() =>
+            setUnit((u) => (u === "imperial" ? "metric" : "imperial"))
+          }
           aria-label="Toggle between imperial and metric units"
         >
-          <span className={unit === "imperial" ? styles.unitActive : styles.unitInactive}>in</span>
+          <span
+            className={
+              unit === "imperial" ? styles.unitActive : styles.unitInactive
+            }
+          >
+            in
+          </span>
           <span className={styles.unitSep}>/</span>
-          <span className={unit === "metric" ? styles.unitActive : styles.unitInactive}>cm</span>
+          <span
+            className={
+              unit === "metric" ? styles.unitActive : styles.unitInactive
+            }
+          >
+            cm
+          </span>
         </button>
       </header>
 
       <main className={styles.main}>
         <section className={styles.leftColumn}>
-          <p className={styles.columnLabel}>Inputs</p>
-          <GaugeForm onSubmit={handleSubmit} loading={loading} unit={unit} />
+          <div className={styles.toolSection}>
+            <p className={styles.toolLabel}>Gauge Estimator</p>
+            <GaugeForm onSubmit={handleSubmit} loading={loading} unit={unit} />
+          </div>
+          <div className={styles.toolDivider} />
+          <div className={styles.toolSection}>
+            <p className={styles.toolLabel}>Stitch Count Converter</p>
+            <StitchConverter result={result} />
+          </div>
         </section>
 
         <section className={styles.rightColumn}>
           <p className={styles.columnLabel}>Results</p>
-          <ResultsPanel result={result} loading={loading} error={error} unit={unit} />
+          <ResultsPanel
+            result={result}
+            loading={loading}
+            error={error}
+            unit={unit}
+          />
         </section>
       </main>
 
       <footer className={styles.footer}>
-        Knitting Gauge Estimator — powered by Supabase + Anthropic · created by{" "}
+        Knitting Gauge Estimator — powered by Claude AI + Supabase · created by{" "}
         <a
           href="https://www.aylinmarie.co/"
           target="_blank"

@@ -70,6 +70,26 @@
   margin-bottom: 32px;
 }
 
+.toolSection {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.toolLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-400);
+}
+
+.toolDivider {
+  height: 2px;
+  background-color: var(--color-black);
+  margin: 8px -48px;
+}
+
 .footer {
   border-top: 1px solid var(--color-gray-200);
   padding: 16px 48px;
@@ -175,6 +195,10 @@
     border-bottom: 2px solid var(--color-black);
     padding: 32px 24px;
     overflow-y: visible;
+  }
+
+  .toolDivider {
+    margin: 8px -24px;
   }
 
   .rightColumn {

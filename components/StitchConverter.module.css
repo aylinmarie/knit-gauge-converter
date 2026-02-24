@@ -1,0 +1,125 @@
+.converter {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.emptyHint {
+  font-size: 0.875rem;
+  color: var(--color-gray-400);
+  line-height: 1.6;
+  border-left: 3px solid var(--color-gray-200);
+  padding-left: 14px;
+}
+
+.inputRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-black);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.optional {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 4px;
+  padding: 1px 5px;
+  letter-spacing: 0.02em;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.9375rem;
+  font-family: var(--font-family);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.input:focus {
+  border-color: var(--color-purple);
+  box-shadow: 0 0 0 3px var(--color-purple-light);
+}
+
+.input:disabled {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+  border-color: var(--color-gray-200);
+}
+
+.input[type='number']::-webkit-inner-spin-button,
+.input[type='number']::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.result {
+  display: flex;
+  gap: 16px;
+}
+
+.resultItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 20px;
+  border: 2px solid var(--color-black);
+  border-radius: var(--radius-sm);
+}
+
+.resultLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gray-400);
+}
+
+.resultValue {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-black);
+  line-height: 1;
+  margin: 6px 0 4px;
+}
+
+.resultUnit {
+  font-size: 0.8125rem;
+  color: var(--color-gray-600);
+}
+
+@media (max-width: 768px) {
+  .inputRow {
+    grid-template-columns: 1fr;
+  }
+
+  .result {
+    flex-direction: column;
+  }
+}

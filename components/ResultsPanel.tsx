@@ -112,13 +112,6 @@ export default function ResultsPanel({
         </div>
       </div>
 
-      <div className={styles.reasoningSection}>
-        <span className={styles.reasoningLabel}>How we got there</span>
-        <p className={styles.reasoningText}>
-          {isMetric ? result.reasoningMetric : result.reasoning}
-        </p>
-      </div>
-
       <div className={styles.needleSection}>
         <span className={styles.needleLabel}>Suggested starting needle</span>
         <p className={styles.needleText}>

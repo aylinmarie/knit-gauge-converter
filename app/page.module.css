@@ -11,7 +11,7 @@
   top: 0;
   z-index: 10;
   background-color: var(--color-white);
-  border-bottom: 2px solid var(--color-black);
+  border-bottom: 1px solid var(--color-gray-200);
   padding: 24px 48px;
   display: flex;
   flex-direction: row;
@@ -47,7 +47,7 @@
 }
 
 .leftColumn {
-  border-right: 2px solid var(--color-black);
+  border-right: 1px solid var(--color-gray-200);
   padding: 48px;
   display: flex;
   flex-direction: column;
@@ -85,9 +85,9 @@
 }
 
 .toolDivider {
-  height: 2px;
-  background-color: var(--color-black);
-  margin: 8px -48px;
+  height: 1px;
+  background-color: var(--color-gray-200);
+  margin: 16px -48px;
 }
 
 .footer {
@@ -96,35 +96,6 @@
   font-size: 0.75rem;
   color: var(--color-gray-400);
 }
-  /* --- Responsive improvements --- */
-  @media (max-width: 768px) {
-    .wrapper, .main, .leftColumn, .rightColumn {
-      max-width: 100vw;
-      overflow-x: hidden;
-    }
-    .main {
-      display: flex;
-      flex-direction: column;
-      grid-template-columns: 1fr;
-    }
-    .gaugeCard {
-      padding: 20px 12px;
-      font-size: 1rem;
-      max-width: 100vw;
-      box-sizing: border-box;
-    }
-    .summaryRow {
-      flex-direction: column;
-      gap: 12px;
-      max-width: 100vw;
-      box-sizing: border-box;
-    }
-    .summaryItem {
-      padding: 12px;
-      max-width: 100vw;
-      box-sizing: border-box;
-    }
-  }
 
 .unitToggle {
   display: flex;
@@ -192,7 +163,7 @@
   }
 
   .header {
-    padding: 20px 24px;
+    padding: 20px 28px;
     flex-direction: row;
     gap: 12px;
     align-items: center;
@@ -200,25 +171,27 @@
 
   .main {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
 
   .leftColumn {
     border-right: none;
-    border-bottom: 2px solid var(--color-black);
-    padding: 32px 24px;
+    border-bottom: 1px solid var(--color-gray-200);
+    padding: 40px 28px;
     overflow-y: visible;
   }
 
   .toolDivider {
-    margin: 8px -24px;
+    margin: 30px -28px;
   }
 
   .rightColumn {
-    padding: 32px 24px;
+    padding: 40px 28px;
     overflow-y: visible;
   }
 
   .footer {
-    padding: 16px 24px;
+    padding: 16px 28px;
   }
 }

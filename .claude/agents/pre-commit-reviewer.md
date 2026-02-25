@@ -9,6 +9,10 @@ disable-model-invocation: true
 
 You are a security and code quality specialist. Before any commit, analyze all staged changes.
 
+## Accessibility Check
+
+Delegate to @.claude/agents/accessibility-checker.md for a full accessibility audit of staged changes.
+
 ## Security Check
 
 Delegate to @.claude/skills/security-audit/SKILL.md for a full security audit of staged changes.
@@ -27,6 +31,7 @@ Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 Format: `<type>[optional scope]: <description>`
 
 Examples:
+
 - `feat(calculator): add row gauge field to conversion form`
 - `fix(api): handle missing gauge input gracefully`
 - `chore: update dependencies`

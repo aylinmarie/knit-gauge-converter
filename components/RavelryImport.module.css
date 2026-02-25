@@ -1,0 +1,191 @@
+.container {
+  width: 100%;
+  background-color: var(--color-purple-light);
+  border: 1.5px solid #c4b5fd;
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.toolLabel {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-purple);
+  margin: 0 0 12px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputRow {
+  display: flex;
+  gap: 10px;
+}
+
+.urlInput {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  font-family: var(--font-family);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.urlInput::placeholder {
+  color: var(--color-gray-400);
+}
+
+.urlInput:focus {
+  border-color: var(--color-purple);
+  box-shadow: 0 0 0 3px #c4b5fd;
+}
+
+.urlInput:disabled {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
+.importButton {
+  padding: 10px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  color: var(--color-purple);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-purple);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+}
+
+.importButton:hover:not(:disabled) {
+  background-color: #f5f3ff;
+}
+
+.importButton:disabled {
+  color: var(--color-gray-300);
+  border-color: var(--color-gray-300);
+  cursor: not-allowed;
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--color-gray-400);
+  margin: 0;
+}
+
+.error {
+  font-size: 0.8125rem;
+  color: #b91c1c;
+  margin: 0;
+}
+
+/* Success state */
+
+.success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background-color: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: var(--radius-sm);
+}
+
+.successContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.checkmark {
+  font-size: 0.875rem;
+  color: #16a34a;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.successText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.successName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.successHint {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+}
+
+.clearButton {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: var(--font-family);
+  color: var(--color-gray-400);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
+}
+
+.clearButton:hover {
+  color: var(--color-black);
+}
+
+/* Loading dots (reused from GaugeForm) */
+
+.loadingDots {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.loadingDots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-gray-300);
+  animation: blink 1.2s infinite;
+}
+
+.loadingDots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loadingDots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import styles from "./GaugeForm.module.css";
 
 const YARN_WEIGHTS = [
@@ -16,6 +16,14 @@ const YARN_WEIGHTS = [
 
 // 4 inches = 10.16 cm; convert sts/10cm → sts/4in
 const metricToImperial = (v: number) => v * (10.16 / 10);
+// sts/4in → sts/10cm (for display when unit=metric)
+const imperialToMetric = (v: number) => v * (10 / 10.16);
+
+interface Prefill {
+  patternGauge?: number;     // sts/4in
+  patternRowGauge?: number;  // sts/4in
+  patternYarnWeight?: string;
+}
 
 interface GaugeFormProps {
   onSubmit: (data: {
@@ -26,13 +34,35 @@ interface GaugeFormProps {
   }) => void;
   loading: boolean;
   unit: "imperial" | "metric";
+  prefill?: Prefill;
 }
 
-export default function GaugeForm({ onSubmit, loading, unit }: GaugeFormProps) {
+export default function GaugeForm({ onSubmit, loading, unit, prefill }: GaugeFormProps) {
   const [patternYarnWeight, setPatternYarnWeight] = useState("medium");
   const [patternGauge, setPatternGauge] = useState<string>("18");
   const [patternRowGauge, setPatternRowGauge] = useState<string>("");
   const [userYarnWeight, setUserYarnWeight] = useState("light");
+
+  // Sync pre-filled values from Ravelry import
+  useEffect(() => {
+    if (!prefill) return;
+    if (prefill.patternYarnWeight) setPatternYarnWeight(prefill.patternYarnWeight);
+    if (prefill.patternGauge !== undefined) {
+      const displayed = unit === "metric"
+        ? Math.round(imperialToMetric(prefill.patternGauge) * 2) / 2
+        : prefill.patternGauge;
+      setPatternGauge(String(displayed));
+    }
+    if (prefill.patternRowGauge !== undefined) {
+      const displayed = unit === "metric"
+        ? Math.round(imperialToMetric(prefill.patternRowGauge) * 2) / 2
+        : prefill.patternRowGauge;
+      setPatternRowGauge(String(displayed));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // `unit` is intentionally excluded: we only want to sync when a new prefill
+  // arrives from Ravelry, not re-run whenever the user toggles imperial/metric.
+  }, [prefill]);
 
   const gaugeUnit = unit === "metric" ? "sts per 10 cm" : "sts per 4 inches";
   const rowGaugeUnit = unit === "metric" ? "rows per 10 cm" : "rows per 4 inches";

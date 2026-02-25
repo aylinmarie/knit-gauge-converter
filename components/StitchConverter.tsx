@@ -85,8 +85,9 @@ export default function StitchConverter({ result }: StitchConverterProps) {
         )}
       </div>
 
+      <div className={styles.result} aria-live="polite" aria-atomic="true">
       {newStitchCount !== null && (
-        <div className={styles.result}>
+        <div>
           <div className={styles.resultItem}>
             <span className={styles.resultLabel}>Update to</span>
             <span className={styles.resultValue}>{newStitchCount}</span>
@@ -101,6 +102,7 @@ export default function StitchConverter({ result }: StitchConverterProps) {
           )}
         </div>
       )}
+      </div>
     </div>
   );
 }

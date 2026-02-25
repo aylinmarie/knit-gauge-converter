@@ -78,7 +78,7 @@ export default function RavelryImport({
 
   return (
     <div className={styles.container}>
-      <p className={styles.toolLabel}>Import from Ravelry</p>
+      <h2 className={styles.toolLabel}>Import from Ravelry</h2>
       {imported ? (
         <div className={styles.success}>
           <div className={styles.successContent}>
@@ -104,23 +104,28 @@ export default function RavelryImport({
       ) : (
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputRow}>
+            <label htmlFor="ravelryUrl" className={styles.srOnly}>
+              Ravelry pattern URL
+            </label>
             <input
+              id="ravelryUrl"
               type="text"
               className={styles.urlInput}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="ravelry.com/patterns/library/pattern-name"
               disabled={disabled || loading}
-              aria-label="Ravelry pattern URL"
+              aria-describedby="ravelry-hint ravelry-error"
               spellCheck={false}
             />
             <button
               type="submit"
               className={styles.importButton}
               disabled={disabled || loading || !url.trim()}
+              aria-label={loading ? "Importing pattern, please wait" : undefined}
             >
               {loading ? (
-                <span className={styles.loadingDots}>
+                <span className={styles.loadingDots} aria-hidden="true">
                   <span />
                   <span />
                   <span />
@@ -130,10 +135,17 @@ export default function RavelryImport({
               )}
             </button>
           </div>
-          <p className={styles.hint}>
+          <p id="ravelry-hint" className={styles.hint}>
             Paste any Ravelry pattern URL to auto-fill gauge and yarn weight.
           </p>
-          {error && <p className={styles.error}>{error}</p>}
+          <p
+            id="ravelry-error"
+            className={styles.error}
+            role="alert"
+            aria-live="polite"
+          >
+            {error}
+          </p>
         </form>
       )}
     </div>

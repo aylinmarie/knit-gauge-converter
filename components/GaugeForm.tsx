@@ -92,7 +92,7 @@ export default function GaugeForm({ onSubmit, loading, unit, prefill }: GaugeFor
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit} aria-busy={loading}>
       <div className={styles.fieldGroup}>
         <label htmlFor="patternYarnWeight" className={styles.label}>
           Pattern Yarn Weight
@@ -190,9 +190,14 @@ export default function GaugeForm({ onSubmit, loading, unit, prefill }: GaugeFor
         </div>
       </div>
 
-      <button type="submit" className={styles.submitButton} disabled={loading}>
+      <button
+        type="submit"
+        className={styles.submitButton}
+        disabled={loading}
+        aria-label={loading ? "Estimating gauge, please wait" : undefined}
+      >
         {loading ? (
-          <span className={styles.loadingDots}>
+          <span className={styles.loadingDots} aria-hidden="true">
             <span />
             <span />
             <span />

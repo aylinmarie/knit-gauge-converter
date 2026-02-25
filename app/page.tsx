@@ -98,7 +98,7 @@ export default function Home() {
           >
             in
           </span>
-          <span className={styles.unitSep}>/</span>
+          <span className={styles.unitSep} aria-hidden="true">/</span>
           <span
             className={
               unit === "metric" ? styles.unitActive : styles.unitInactive
@@ -125,7 +125,7 @@ export default function Home() {
           </div>
           <div className={styles.toolDivider} />
           <div className={styles.toolSection}>
-            <p className={styles.toolLabel}>Gauge Estimator</p>
+            <h2 className={styles.toolLabel}>Gauge Estimator</h2>
             <GaugeForm
               onSubmit={handleSubmit}
               loading={loading}
@@ -135,13 +135,13 @@ export default function Home() {
           </div>
           <div className={styles.toolDivider} />
           <div className={styles.toolSection}>
-            <p className={styles.toolLabel}>Stitch Count Converter</p>
+            <h2 className={styles.toolLabel}>Stitch Count Converter</h2>
             <StitchConverter result={result} />
           </div>
         </section>
 
         <section className={styles.rightColumn}>
-          <p className={styles.columnLabel}>Results</p>
+          <h2 className={styles.columnLabel}>Results</h2>
           <ResultsPanel
             result={result}
             loading={loading}
@@ -159,6 +159,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           Aylin Marie
+          <span className={styles.srOnly}> (opens in new tab)</span>
         </a>
       </footer>
     </div>

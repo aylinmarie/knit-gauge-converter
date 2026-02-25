@@ -83,8 +83,24 @@
 
 .hint {
   font-size: 0.8125rem;
-  color: var(--color-gray-400);
+  color: var(--color-gray-600);
   margin: 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.error:empty {
+  display: none;
 }
 
 .error {
@@ -149,7 +165,9 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 4px 8px;
+  min-height: 24px;
+  min-width: 24px;
   white-space: nowrap;
   flex-shrink: 0;
   text-decoration: underline;

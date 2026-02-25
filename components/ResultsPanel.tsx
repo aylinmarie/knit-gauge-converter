@@ -23,17 +23,18 @@ export default function ResultsPanel({
 }: ResultsPanelProps) {
   if (loading) {
     return (
-      <div className={styles.skeleton}>
-        <div className={styles.skeletonBlock} />
-        <div className={styles.skeletonBlock} />
-        <div className={styles.skeletonBlock} />
+      <div className={styles.skeleton} role="status">
+        <span className={styles.srOnly}>Loading results…</span>
+        <div className={styles.skeletonBlock} aria-hidden="true" />
+        <div className={styles.skeletonBlock} aria-hidden="true" />
+        <div className={styles.skeletonBlock} aria-hidden="true" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className={styles.error}>
+      <div className={styles.error} role="alert">
         <p className={styles.errorTitle}>Estimation failed</p>
         <p className={styles.errorMessage}>{error}</p>
       </div>

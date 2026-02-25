@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import GaugeForm from "@/components/GaugeForm";
 import ResultsPanel from "@/components/ResultsPanel";
 import StitchConverter from "@/components/StitchConverter";
+import RavelryImport from "@/components/RavelryImport";
 
 export interface EstimateResult {
   estimatedGauge: number;
@@ -22,6 +23,14 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [unit, setUnit] = useState<"imperial" | "metric">("imperial");
+  const [prefill, setPrefill] = useState<
+    | {
+        patternGauge?: number;
+        patternRowGauge?: number;
+        patternYarnWeight?: string;
+      }
+    | undefined
+  >(undefined);
 
   const handleSubmit = async (data: {
     patternYarnWeight: string;
@@ -103,8 +112,26 @@ export default function Home() {
       <main className={styles.main}>
         <section className={styles.leftColumn}>
           <div className={styles.toolSection}>
+            <RavelryImport
+              onImport={({
+                patternGauge,
+                patternRowGauge,
+                patternYarnWeight,
+              }) =>
+                setPrefill({ patternGauge, patternRowGauge, patternYarnWeight })
+              }
+              disabled={loading}
+            />
+          </div>
+          <div className={styles.toolDivider} />
+          <div className={styles.toolSection}>
             <p className={styles.toolLabel}>Gauge Estimator</p>
-            <GaugeForm onSubmit={handleSubmit} loading={loading} unit={unit} />
+            <GaugeForm
+              onSubmit={handleSubmit}
+              loading={loading}
+              unit={unit}
+              prefill={prefill}
+            />
           </div>
           <div className={styles.toolDivider} />
           <div className={styles.toolSection}>

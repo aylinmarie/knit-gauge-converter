@@ -7,5 +7,4 @@ A lightweight web utility to translate pattern instructions into your personal k
 
 ## 🛠️ Tech Stack
 Framework: [Next.js](https://nextjs.org/) (App Router)
-Database & Auth: [Supabase](https://supabase.com/)
 AI Engine: [Anthropic Claude API](https://www.anthropic.com/)

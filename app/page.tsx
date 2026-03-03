@@ -152,7 +152,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        Knitting Gauge Estimator — powered by Claude AI + Supabase · created by{" "}
+        Knitting Gauge Estimator — powered by Claude AI · created by{" "}
         <a
           href="https://www.aylinmarie.co/"
           target="_blank"

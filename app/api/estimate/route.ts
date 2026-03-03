@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -114,19 +113,6 @@ function estimateGauge(
   };
 }
 
-// ── Supabase ─────────────────────────────────────────────────────────────────
-
-function getSupabaseClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) {
-    throw new Error(
-      "Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY) are not set."
-    );
-  }
-  return createClient(url, key);
-}
-
 // ── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -176,24 +162,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  // 3. Log to Supabase (non-blocking)
-  try {
-    const supabase = getSupabaseClient();
-    const { error: dbError } = await supabase.from("yarn_intelligence").insert([
-      {
-        pattern_yarn_weight: patternYarnWeight,
-        pattern_gauge:       patternGauge,
-        user_yarn_weight:    userYarnWeight,
-        estimated_gauge:     result.estimatedGauge,
-      },
-    ]);
-    if (dbError) {
-      console.warn("[estimate] Supabase insert warning:", dbError.message);
-    }
-  } catch (err) {
-    console.warn("[estimate] Supabase client error:", err);
-  }
-
-  // 4. Return result
+  // 3. Return result
   return NextResponse.json(result, { status: 200 });
 }

@@ -16,7 +16,7 @@ Perform a thorough security audit of the provided code.
 
 **Sensitive data exposure**: Logging secrets, exposing PII in API responses
 
-**Access control**: Missing permission checks, over-broad Supabase RLS policies
+**Access control**: Missing permission checks, over-broad API access controls
 
 **Security misconfiguration**: Overly permissive CORS, missing Next.js security headers
 
@@ -31,12 +31,6 @@ Perform a thorough security audit of the provided code.
 - No rate limiting on AI or database-hitting endpoints
 - Auth checks present before accessing user data
 - Sensitive errors not leaked to client responses
-
-**Supabase**:
-- `SUPABASE_SERVICE_ROLE_KEY` never exposed to client-side code or logged
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` is appropriately scoped (anon key, not service role)
-- RLS enabled on all tables containing user data
-- No direct table access from client without RLS policies
 
 **Anthropic SDK**:
 - `ANTHROPIC_API_KEY` used only in server-side code (API routes, server components) — never in client components or NEXT_PUBLIC_ env vars

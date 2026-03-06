@@ -12,7 +12,7 @@
   z-index: 10;
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-gray-200);
-  padding: 24px 48px;
+  padding: 20px 32px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -48,14 +48,14 @@
 
 .leftColumn {
   border-right: 1px solid var(--color-gray-200);
-  padding: 48px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
 
 .rightColumn {
-  padding: 48px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -67,13 +67,13 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-gray-400);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .toolSection {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
 }
 
 .toolLabel {
@@ -87,21 +87,56 @@
 .toolDivider {
   height: 1px;
   background-color: var(--color-gray-200);
-  margin: 16px -48px;
+  margin: 16px -32px;
+}
+
+/* Step header: badge + label + optional hint */
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--color-purple);
+  background-color: var(--color-purple-light);
+  border-radius: 50%;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+
+.stepOptional {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-gray-400);
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 4px;
+  padding: 1px 6px;
+  letter-spacing: 0.02em;
+  margin-left: auto;
 }
 
 .footer {
   border-top: 1px solid var(--color-gray-200);
-  padding: 16px 48px;
+  padding: 16px 32px;
   font-size: 0.75rem;
   color: var(--color-gray-400);
 }
 
+/* Unit toggle */
 .unitToggle {
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding: 6px 12px;
+  gap: 3px;
+  padding: 8px 14px;
   font-size: 0.8125rem;
   font-weight: 600;
   font-family: var(--font-family);
@@ -118,6 +153,12 @@
   border-color: var(--color-purple);
 }
 
+.unitToggleLabel {
+  color: var(--color-gray-600);
+  font-weight: 500;
+  margin-right: 2px;
+}
+
 .unitActive {
   color: var(--color-purple);
   font-weight: 700;
@@ -129,7 +170,13 @@
 
 .unitSep {
   color: var(--color-gray-300);
-  margin: 0 2px;
+  margin: 0 1px;
+}
+
+.unitSwapIcon {
+  color: var(--color-gray-400);
+  font-size: 0.75rem;
+  margin-left: 4px;
 }
 
 .srOnly {
@@ -163,7 +210,7 @@
   }
 
   .header {
-    padding: 20px 28px;
+    padding: 16px 20px;
     flex-direction: row;
     gap: 12px;
     align-items: center;
@@ -178,20 +225,20 @@
   .leftColumn {
     border-right: none;
     border-bottom: 1px solid var(--color-gray-200);
-    padding: 40px 28px;
+    padding: 28px 20px;
     overflow-y: visible;
   }
 
   .toolDivider {
-    margin: 30px -28px;
+    margin: 20px -20px;
   }
 
   .rightColumn {
-    padding: 40px 28px;
+    padding: 28px 20px;
     overflow-y: visible;
   }
 
   .footer {
-    padding: 16px 28px;
+    padding: 16px 20px;
   }
 }

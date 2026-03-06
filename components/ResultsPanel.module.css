@@ -19,6 +19,7 @@
   gap: 12px;
   color: var(--color-gray-400);
   user-select: none;
+  padding: 32px 0;
 }
 
 .emptyIcon {
@@ -26,13 +27,47 @@
   line-height: 1;
 }
 
+.emptyHeading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  text-align: center;
+}
+
 .emptyText {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--color-gray-400);
   text-align: center;
-  max-width: 240px;
+  max-width: 260px;
   line-height: 1.6;
+}
+
+.emptyFeatureList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 16px 20px;
+  background-color: var(--color-gray-100);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-gray-200);
+}
+
+.emptyFeatureList li {
+  font-size: 0.8125rem;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+  padding-left: 1.25em;
+  position: relative;
+}
+
+.emptyFeatureList li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-purple);
 }
 
 /* Loading skeleton */
@@ -77,7 +112,7 @@
 .results {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 28px;
 }
 
 .gaugeCard {
@@ -87,7 +122,14 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  animation: fadeInUp 0.25s ease-out;
 }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .gaugeCardLabel {
   font-size: 0.6875rem;
   font-weight: 600;
@@ -171,6 +213,7 @@
   color: var(--color-black);
 }
 
+/* Needle section */
 .needleSection {
   display: flex;
   flex-direction: column;
@@ -185,11 +228,74 @@
   color: var(--color-purple);
 }
 
-.needleText {
-  font-size: 0.9375rem;
-  line-height: 1.7;
-  color: var(--color-gray-800);
+.needleCard {
   border-left: 3px solid var(--color-purple);
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.needleSize {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-black);
+  letter-spacing: -0.01em;
+}
+
+.needleHint {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-gray-600);
+}
+
+.needleTips {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.8125rem;
+  color: var(--color-gray-400);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reasoning section */
+.reasoningSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reasoningToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  color: var(--color-gray-600);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: color 0.15s ease;
+  text-align: left;
+}
+
+.reasoningToggle:hover {
+  color: var(--color-black);
+}
+
+.reasoningToggleIcon {
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+}
+
+.reasoningText {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--color-gray-600);
+  border-left: 3px solid var(--color-gray-200);
   padding-left: 16px;
 }
 

@@ -65,6 +65,13 @@ export default function Home() {
         patternRowGauge: data.patternRowGauge,
         userYarnWeight: data.userYarnWeight,
       });
+
+      // On mobile, scroll results into view automatically
+      if (typeof window !== "undefined" && window.innerWidth <= 768) {
+        setTimeout(() => {
+          document.getElementById("results-panel")?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unexpected error occurred.",
@@ -73,6 +80,8 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  const isMetric = unit === "metric";
 
   return (
     <div className={styles.wrapper}>
@@ -89,8 +98,9 @@ export default function Home() {
           onClick={() =>
             setUnit((u) => (u === "imperial" ? "metric" : "imperial"))
           }
-          aria-label="Toggle between imperial and metric units"
+          aria-label={isMetric ? "Switch to imperial units (inches)" : "Switch to metric units (cm)"}
         >
+          <span className={styles.unitToggleLabel}>Units:</span>
           <span
             className={
               unit === "imperial" ? styles.unitActive : styles.unitInactive
@@ -106,12 +116,18 @@ export default function Home() {
           >
             cm
           </span>
+          <span className={styles.unitSwapIcon} aria-hidden="true">↕</span>
         </button>
       </header>
 
       <main className={styles.main}>
         <section className={styles.leftColumn}>
           <div className={styles.toolSection}>
+            <div className={styles.stepHeader}>
+              <span className={styles.stepBadge} aria-hidden="true">1</span>
+              <h2 className={styles.toolLabel}>Import from Ravelry</h2>
+              <span className={styles.stepOptional}>optional</span>
+            </div>
             <RavelryImport
               onImport={({
                 patternGauge,
@@ -125,7 +141,10 @@ export default function Home() {
           </div>
           <div className={styles.toolDivider} />
           <div className={styles.toolSection}>
-            <h2 className={styles.toolLabel}>Gauge Estimator</h2>
+            <div className={styles.stepHeader}>
+              <span className={styles.stepBadge} aria-hidden="true">2</span>
+              <h2 className={styles.toolLabel}>Gauge Estimator</h2>
+            </div>
             <GaugeForm
               onSubmit={handleSubmit}
               loading={loading}
@@ -135,12 +154,16 @@ export default function Home() {
           </div>
           <div className={styles.toolDivider} />
           <div className={styles.toolSection}>
-            <h2 className={styles.toolLabel}>Stitch Count Converter</h2>
+            <div className={styles.stepHeader}>
+              <span className={styles.stepBadge} aria-hidden="true">3</span>
+              <h2 className={styles.toolLabel}>Stitch Count Converter</h2>
+              {!result && <span className={styles.stepOptional}>after estimating</span>}
+            </div>
             <StitchConverter result={result} />
           </div>
         </section>
 
-        <section className={styles.rightColumn}>
+        <section className={styles.rightColumn} id="results-panel">
           <h2 className={styles.columnLabel}>Results</h2>
           <ResultsPanel
             result={result}

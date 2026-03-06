@@ -44,7 +44,7 @@ describe("ResultsPanel", () => {
         <ResultsPanel result={null} loading={false} error={null} unit="imperial" />
       );
       expect(
-        screen.getByText(/Fill in the form and click/i)
+        screen.getByText(/Fill in your pattern/i)
       ).toBeInTheDocument();
     });
   });

@@ -29,7 +29,7 @@ export default function ResultsPanel({
   if (loading) {
     return (
       <div className={styles.skeleton} role="status">
-        <span className={styles.srOnly}>Loading results…</span>
+        <span className="sr-only">Loading results…</span>
         <div className={styles.skeletonBlock} aria-hidden="true" />
         <div className={styles.skeletonBlock} aria-hidden="true" />
         <div className={styles.skeletonBlock} aria-hidden="true" />
@@ -57,7 +57,7 @@ export default function ResultsPanel({
           Fill in your pattern&rsquo;s gauge and the yarn weight you&rsquo;re
           substituting, then click &ldquo;Estimate Gauge.&rdquo;
         </p>
-        <ul className={styles.emptyFeatureList} aria-label="What you'll get">
+        <ul className={styles.emptyFeatureList} aria-label="What you'll get" role="list">
           <li>Estimated stitch gauge for your yarn</li>
           <li>Row gauge (if you provide one)</li>
           <li>Suggested starting needle size</li>
@@ -134,10 +134,6 @@ export default function ResultsPanel({
             US {needle.us} / {needle.metric}
           </p>
           <p className={styles.needleHint}>Cast on a swatch first to dial in your gauge before starting the project.</p>
-          <div className={styles.needleTips}>
-            <span>↑ too many sts → go up a size</span>
-            <span>↓ too few sts → go down a size</span>
-          </div>
         </div>
       </div>
 
@@ -148,6 +144,7 @@ export default function ResultsPanel({
             className={styles.reasoningToggle}
             onClick={() => setReasoningOpen((o) => !o)}
             aria-expanded={reasoningOpen}
+            aria-controls="reasoning-text"
           >
             <span className={styles.reasoningToggleIcon} aria-hidden="true">
               {reasoningOpen ? "▾" : "▸"}
@@ -155,7 +152,7 @@ export default function ResultsPanel({
             How we estimated this
           </button>
           {reasoningOpen && (
-            <p className={styles.reasoningText}>{reasoningText}</p>
+            <p id="reasoning-text" className={styles.reasoningText}>{reasoningText}</p>
           )}
         </div>
       )}

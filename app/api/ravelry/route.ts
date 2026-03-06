@@ -58,6 +58,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing required field: url." }, { status: 400 });
   }
 
+  if (body.url.length > 2000) {
+    return NextResponse.json({ error: "URL is too long." }, { status: 400 });
+  }
+
   // 2. Extract permalink from URL
   const permalink = extractPermalink(body.url.trim());
   if (!permalink) {
@@ -129,12 +133,12 @@ export async function POST(req: NextRequest) {
     const detailData = await detailRes.json();
     const p = detailData.pattern ?? detailData;
 
-    gauge = typeof p.gauge === "number" ? p.gauge : null;
-    gaugeDivisor = typeof p.gauge_divisor === "number" && p.gauge_divisor > 0
+    gauge = typeof p?.gauge === "number" ? p.gauge : null;
+    gaugeDivisor = typeof p?.gauge_divisor === "number" && p.gauge_divisor > 0
       ? p.gauge_divisor
       : 4;
-    rowGauge = typeof p.row_gauge === "number" ? p.row_gauge : null;
-    yarnWeightName = p.yarn_weight?.name ?? null;
+    rowGauge = typeof p?.row_gauge === "number" ? p.row_gauge : null;
+    yarnWeightName = typeof p?.yarn_weight?.name === "string" ? p.yarn_weight.name : null;
   } catch (err) {
     console.error("[ravelry] Detail fetch error:", err);
     return NextResponse.json({ error: "Failed to fetch pattern details." }, { status: 502 });

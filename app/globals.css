@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 *,
 *::before,
 *::after {
@@ -23,8 +21,14 @@
   --color-purple: #7c3aed;
   --color-purple-dark: #6d28d9;
   --color-purple-light: #ede9fe;
+  --color-purple-hover-bg: #f5f3ff;
 
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-error: #b91c1c;
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #86efac;
+  --color-success-text: #16a34a;
+
+  --font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -51,4 +55,17 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-purple);
   outline-offset: 2px;
+}
+
+/* Visually hidden but accessible to screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

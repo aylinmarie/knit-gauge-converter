@@ -1,18 +1,19 @@
 .container {
   width: 100%;
-  background-color: var(--color-purple-light);
-  border: 1.5px solid var(--color-purple);
+  background-color: var(--color-sage-light);
+  border: 1.5px solid var(--color-sage);
   border-radius: var(--radius-sm);
-  padding: 16px;
+  padding: 16px 18px;
 }
 
 .toolLabel {
-  font-size: 0.6875rem;
+  font-family: var(--font-body);
+  font-size: 0.6rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
-  margin-bottom: 16px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-purple);
+  color: var(--color-sage);
+  margin-bottom: 14px;
 }
 
 .form {
@@ -23,46 +24,49 @@
 
 .inputRow {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .urlInput {
   flex: 1;
   min-width: 0;
-  padding: 10px 12px;
+  padding: 9px 11px;
+  font-family: var(--font-body);
   font-size: 0.875rem;
-  font-family: var(--font-family);
-  color: var(--color-black);
-  background-color: var(--color-white);
-  border: 1.5px solid var(--color-gray-300);
+  color: var(--color-ink);
+  background-color: var(--color-ivory);
+  border: 1.5px solid var(--color-straw-light);
   border-radius: var(--radius-sm);
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .urlInput::placeholder {
-  color: var(--color-gray-400);
+  color: var(--color-mist);
+  font-style: italic;
 }
 
 .urlInput:focus {
-  border-color: var(--color-purple);
-  box-shadow: 0 0 0 3px #c4b5fd;
+  border-color: var(--color-sage);
+  box-shadow: 0 0 0 3px var(--color-sage-light);
 }
 
 .urlInput:disabled {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-400);
+  background-color: var(--color-linen);
+  color: var(--color-mist);
   cursor: not-allowed;
 }
 
 .importButton {
-  padding: 10px 18px;
-  font-size: 0.875rem;
+  padding: 9px 16px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
   font-weight: 600;
-  font-family: var(--font-family);
-  color: var(--color-purple);
-  background-color: var(--color-white);
-  border: 1.5px solid var(--color-purple);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+  background-color: var(--color-ivory);
+  border: 1.5px solid var(--color-sage);
   border-radius: var(--radius-sm);
   cursor: pointer;
   white-space: nowrap;
@@ -74,21 +78,24 @@
 }
 
 .importButton:hover:not(:disabled) {
-  background-color: #f5f3ff;
+  background-color: var(--color-sage-light);
 }
 
 .importButton:disabled {
-  color: var(--color-gray-300);
-  border-color: var(--color-gray-300);
+  color: var(--color-mist);
+  border-color: var(--color-straw-light);
   cursor: not-allowed;
 }
 
 .hint {
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  color: var(--color-gray-800);
+  font-style: italic;
+  color: var(--color-sepia);
   margin: 0;
 }
 
+/* ── Accessibility ── */
 .srOnly {
   position: absolute;
   width: 1px;
@@ -101,26 +108,27 @@
   border: 0;
 }
 
+/* ── Error ── */
 .error:empty {
   display: none;
 }
 
 .error {
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  color: #b91c1c;
+  color: var(--color-rust-dark);
   margin: 0;
 }
 
-/* Success state */
-
+/* ── Success state ── */
 .success {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px;
-  background-color: #f0fdf4;
-  border: 1.5px solid #86efac;
+  background-color: var(--color-sage-light);
+  border: 1.5px solid var(--color-sage);
   border-radius: var(--radius-sm);
 }
 
@@ -133,7 +141,7 @@
 
 .checkmark {
   font-size: 0.875rem;
-  color: #16a34a;
+  color: var(--color-sage);
   flex-shrink: 0;
   font-weight: 700;
 }
@@ -146,24 +154,27 @@
 }
 
 .successName {
+  font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--color-black);
+  color: var(--color-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .successHint {
+  font-family: var(--font-body);
   font-size: 0.75rem;
-  color: var(--color-gray-400);
+  font-style: italic;
+  color: var(--color-sepia);
 }
 
 .clearButton {
+  font-family: var(--font-body);
   font-size: 0.8125rem;
   font-weight: 500;
-  font-family: var(--font-family);
-  color: var(--color-gray-400);
+  color: var(--color-mist);
   background: none;
   border: none;
   cursor: pointer;
@@ -178,11 +189,10 @@
 }
 
 .clearButton:hover {
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
-/* Loading dots (reused from GaugeForm) */
-
+/* ── Loading dots ── */
 .loadingDots {
   display: inline-flex;
   gap: 3px;
@@ -193,19 +203,14 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background-color: var(--color-gray-300);
+  background-color: var(--color-sage);
   animation: blink 1.2s infinite;
 }
 
-.loadingDots span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.loadingDots span:nth-child(3) {
-  animation-delay: 0.4s;
-}
+.loadingDots span:nth-child(2) { animation-delay: 0.2s; }
+.loadingDots span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes blink {
   0%, 80%, 100% { opacity: 0.2; }
-  40% { opacity: 1; }
+  40%           { opacity: 1; }
 }

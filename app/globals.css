@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 *,
 *::before,
 *::after {
@@ -9,46 +7,71 @@
 }
 
 :root {
-  --color-black: #000000;
-  --color-white: #ffffff;
-  --color-gray-100: #f5f5f5;
-  --color-gray-200: #e5e5e5;
-  --color-gray-300: #d4d4d4;
-  /* #6b6b6b — 4.9:1 on white, passes WCAG AA */
-  --color-gray-400: #6b6b6b;
-  --color-gray-600: #525252;
-  --color-gray-800: #262626;
+  /* ── Warm Parchment Palette ── */
+  --color-parchment: #F3EDE0;
+  --color-ivory: #FAF6EE;
+  --color-linen: #EBE3D0;
+  --color-straw: #C5AA80;
+  --color-straw-light: #E5D9C4;
 
-  /* Purple accent — #7c3aed — 5.3:1 on white, passes WCAG AA */
-  --color-purple: #7c3aed;
-  --color-purple-dark: #6d28d9;
-  --color-purple-light: #ede9fe;
+  --color-ink: #1A1610;
+  --color-sepia: #6B5840;
+  --color-mist: #9E8B75;
 
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Terracotta / rust — primary accent */
+  --color-rust: #9B3A1E;
+  --color-rust-dark: #7D2E17;
+  --color-rust-light: #F2E9E3;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
+  /* Sage / forest green — secondary accent */
+  --color-sage: #3C5940;
+  --color-sage-light: #EBF0E9;
+
+  /* ── Backwards-compat aliases ── */
+  /* Components that still reference old variable names will pick up new values */
+  --color-black: var(--color-ink);
+  --color-white: var(--color-ivory);
+  --color-gray-100: var(--color-parchment);
+  --color-gray-200: var(--color-linen);
+  --color-gray-300: var(--color-straw-light);
+  --color-gray-400: var(--color-mist);
+  --color-gray-600: var(--color-sepia);
+  --color-gray-800: #3D2E1E;
+  --color-purple: var(--color-rust);
+  --color-purple-dark: var(--color-rust-dark);
+  --color-purple-light: var(--color-rust-light);
+
+  /* ── Typography ── */
+  --font-display: var(--font-display, 'Georgia', serif);
+  --font-body: var(--font-body, system-ui, sans-serif);
+  --font-family: var(--font-body);
+
+  /* ── Shape ── */
+  --radius-sm: 2px;
+  --radius-md: 4px;
 }
 
 html,
 body {
   height: 100%;
-  background-color: var(--color-white);
-  color: var(--color-black);
-  font-family: var(--font-family);
+  background-color: var(--color-parchment);
+  /* Subtle woven/crosshatch texture evocative of knitted fabric */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M0 8L8 0' stroke='%23C5AA80' stroke-width='0.35' fill='none' opacity='0.3'/%3E%3C/svg%3E");
+  color: var(--color-ink);
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-/* Prevent horizontal scroll on mobile */
+
 body {
   max-width: 100vw;
   overflow-x: hidden;
 }
 
-/* Global focus ring — keyboard users get a clear purple outline */
+/* Focus ring — warm rust outline for keyboard users */
 :focus-visible {
-  outline: 2px solid var(--color-purple);
+  outline: 2px solid var(--color-rust);
   outline-offset: 2px;
 }

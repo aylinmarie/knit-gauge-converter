@@ -31,7 +31,7 @@
 }
 
 .emptyText {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.875rem;
   font-style: italic;
   color: var(--color-mist);
@@ -55,7 +55,7 @@
     var(--color-linen)   100%
   );
   background-size: 200% 100%;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   animation: shimmer 1.6s infinite;
 }
 
@@ -83,47 +83,32 @@
 
 /* ── Gauge card ── */
 .gaugeCard {
-  position: relative;
   background-color: var(--color-ivory);
   border: 1.5px solid var(--color-straw);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   padding: 28px 32px 32px;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  overflow: hidden;
-}
-
-/* Inner decorative inset rule */
-.gaugeCard::before {
-  content: '';
-  position: absolute;
-  inset: 6px;
-  border: 1px solid var(--color-linen);
-  pointer-events: none;
 }
 
 .gaugeCardLabel {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-mist);
-  position: relative;
-  z-index: 1;
 }
 
 .gaugeCardValue {
-  font-family: var(--font-display);
+  font-family: var(--font-family);
   font-size: 4rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--color-ink);
   line-height: 1;
   margin: 8px 0 2px;
-  position: relative;
-  z-index: 1;
   animation: numberReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
 }
 
@@ -133,7 +118,7 @@
 }
 
 .gaugeCardUnit {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.875rem;
   color: var(--color-sepia);
   position: relative;
@@ -152,7 +137,7 @@
 }
 
 .rowGaugeInCardLabel {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -162,15 +147,15 @@
 }
 
 .rowGaugeInCardValue {
-  font-family: var(--font-display);
+  font-family: var(--font-family);
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-ink);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .rowGaugeInCardUnit {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.8125rem;
   color: var(--color-sepia);
   margin-left: 2px;
@@ -190,11 +175,11 @@
   padding: 14px 16px;
   background-color: var(--color-ivory);
   border: 1px solid var(--color-linen);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
 .summaryItemLabel {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -203,7 +188,7 @@
 }
 
 .summaryItemValue {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--color-ink);
@@ -217,7 +202,7 @@
 }
 
 .needleLabel {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -226,7 +211,7 @@
 }
 
 .needleText {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.9375rem;
   line-height: 1.75;
   color: var(--color-ink);
@@ -241,19 +226,19 @@
   gap: 6px;
   padding: 18px 20px;
   border: 1px solid var(--color-straw-light);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background-color: var(--color-linen);
 }
 
 .errorTitle {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-ink);
 }
 
 .errorMessage {
-  font-family: var(--font-body);
+  font-family: var(--font-family);
   font-size: 0.875rem;
   color: var(--color-sepia);
   line-height: 1.6;

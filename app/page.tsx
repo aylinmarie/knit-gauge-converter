@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import type { YarnWeightKey } from "@/lib/yarnWeights";
 import styles from "./page.module.css";
 import GaugeForm from "@/components/GaugeForm";
 import ResultsPanel from "@/components/ResultsPanel";
@@ -12,10 +13,10 @@ export interface EstimateResult {
   estimatedRowGauge?: number;
   reasoning: string;
   reasoningMetric: string;
-  patternYarnWeight: string;
+  patternYarnWeight: YarnWeightKey;
   patternGauge: number;
   patternRowGauge?: number;
-  userYarnWeight: string;
+  userYarnWeight: YarnWeightKey;
 }
 
 export default function Home() {
@@ -32,7 +33,7 @@ export default function Home() {
     | undefined
   >(undefined);
 
-  const handleSubmit = async (data: {
+  const handleSubmit = useCallback(async (data: {
     patternYarnWeight: string;
     patternGauge: number;
     patternRowGauge?: number;
@@ -60,11 +61,18 @@ export default function Home() {
         estimatedRowGauge: json.estimatedRowGauge,
         reasoning: json.reasoning,
         reasoningMetric: json.reasoningMetric,
-        patternYarnWeight: data.patternYarnWeight,
+        patternYarnWeight: data.patternYarnWeight as YarnWeightKey,
         patternGauge: data.patternGauge,
         patternRowGauge: data.patternRowGauge,
-        userYarnWeight: data.userYarnWeight,
+        userYarnWeight: data.userYarnWeight as YarnWeightKey,
       });
+
+      // On mobile, scroll results into view automatically
+      if (typeof window !== "undefined" && window.innerWidth <= 768) {
+        setTimeout(() => {
+          document.getElementById("results-panel")?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unexpected error occurred.",
@@ -72,7 +80,18 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  const handleImport = useCallback(({ patternGauge, patternRowGauge, patternYarnWeight }: {
+    patternGauge: number;
+    patternRowGauge?: number;
+    patternYarnWeight?: string;
+    patternName: string;
+  }) => {
+    setPrefill({ patternGauge, patternRowGauge, patternYarnWeight });
+  }, []);
+
+  const isMetric = unit === "metric";
 
   return (
     <div className={styles.wrapper}>
@@ -89,8 +108,10 @@ export default function Home() {
           onClick={() =>
             setUnit((u) => (u === "imperial" ? "metric" : "imperial"))
           }
-          aria-label="Toggle between imperial and metric units"
+          aria-label={isMetric ? "Switch to imperial units (inches)" : "Switch to metric units (cm)"}
+          aria-pressed={isMetric}
         >
+          <span className={styles.unitToggleLabel}>Units:</span>
           <span
             className={
               unit === "imperial" ? styles.unitActive : styles.unitInactive
@@ -106,26 +127,29 @@ export default function Home() {
           >
             cm
           </span>
+          <span className={styles.unitSwapIcon} aria-hidden="true">↕</span>
         </button>
       </header>
 
       <main className={styles.main}>
-        <section className={styles.leftColumn}>
+        <section className={styles.leftColumn} aria-label="Tools">
           <div className={styles.toolSection}>
+            <div className={styles.stepHeader}>
+              <span className={styles.stepBadge} aria-hidden="true">1</span>
+              <h2 className={styles.toolLabel}>Import from Ravelry</h2>
+              <span className={styles.stepOptional}>optional</span>
+            </div>
             <RavelryImport
-              onImport={({
-                patternGauge,
-                patternRowGauge,
-                patternYarnWeight,
-              }) =>
-                setPrefill({ patternGauge, patternRowGauge, patternYarnWeight })
-              }
+              onImport={handleImport}
               disabled={loading}
             />
           </div>
           <div className={styles.toolDivider} />
           <div className={styles.toolSection}>
-            <h2 className={styles.toolLabel}>Gauge Estimator</h2>
+            <div className={styles.stepHeader}>
+              <span className={styles.stepBadge} aria-hidden="true">2</span>
+              <h2 className={styles.toolLabel}>Gauge Estimator</h2>
+            </div>
             <GaugeForm
               onSubmit={handleSubmit}
               loading={loading}
@@ -135,13 +159,23 @@ export default function Home() {
           </div>
           <div className={styles.toolDivider} />
           <div className={styles.toolSection}>
-            <h2 className={styles.toolLabel}>Stitch Count Converter</h2>
+            <div className={styles.stepHeader}>
+              <span className={styles.stepBadge} aria-hidden="true">3</span>
+              <h2 className={styles.toolLabel}>Stitch Count Converter</h2>
+              {!result && <span className={styles.stepOptional}>after estimating</span>}
+            </div>
             <StitchConverter result={result} />
           </div>
         </section>
 
-        <section className={styles.rightColumn}>
-          <h2 className={styles.columnLabel}>Results</h2>
+        <section
+          className={styles.rightColumn}
+          id="results-panel"
+          aria-labelledby="results-heading"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <h2 className={styles.columnLabel} id="results-heading">Results</h2>
           <ResultsPanel
             result={result}
             loading={loading}
@@ -159,7 +193,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           Aylin Marie
-          <span className={styles.srOnly}> (opens in new tab)</span>
+          <span className="sr-only"> (opens in new tab)</span>
         </a>
       </footer>
     </div>

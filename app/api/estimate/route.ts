@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
+import { YARN_WEIGHT_LABELS, type YarnWeightKey } from "@/lib/yarnWeights";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -63,9 +63,9 @@ function toMetricDisplay(v: number): number {
 }
 
 function estimateGauge(
-  patternYarnWeight: string,
+  patternYarnWeight: YarnWeightKey,
   patternGauge: number,
-  userYarnWeight: string,
+  userYarnWeight: YarnWeightKey,
   patternRowGauge?: number,
 ): {
   estimatedGauge: number;
@@ -77,7 +77,7 @@ function estimateGauge(
   const userMidpoint    = YARN_MIDPOINTS[userYarnWeight];
 
   if (!patternMidpoint || !userMidpoint) {
-    throw new Error(`Unknown yarn weight: ${!patternMidpoint ? patternYarnWeight : userYarnWeight}`);
+    throw new Error("Invalid yarn weight value.");
   }
 
   const ratio = userMidpoint / patternMidpoint;
@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (patternGauge <= 0 || patternGauge > 100) {
+  if (!Number.isFinite(patternGauge) || patternGauge <= 0 || patternGauge > 100) {
     return NextResponse.json(
       { error: "patternGauge must be between 1 and 100." },
       { status: 400 }
@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (patternRowGauge !== undefined) {
-    if (typeof patternRowGauge !== "number" || patternRowGauge <= 0 || patternRowGauge > 200) {
+    if (typeof patternRowGauge !== "number" || !Number.isFinite(patternRowGauge) || patternRowGauge <= 0 || patternRowGauge > 200) {
       return NextResponse.json(
         { error: "patternRowGauge must be between 1 and 200." },
         { status: 400 }
@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
   // 2. Calculate gauge estimate
   let result: EstimateResponse;
   try {
-    result = estimateGauge(patternYarnWeight, patternGauge, userYarnWeight, patternRowGauge);
+    result = estimateGauge(patternYarnWeight as YarnWeightKey, patternGauge, userYarnWeight as YarnWeightKey, patternRowGauge);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Calculation error.";
     return NextResponse.json({ error: message }, { status: 400 });

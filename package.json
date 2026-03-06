@@ -15,7 +15,6 @@
     "pre-commit": "npm test -- --no-coverage"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.78.0",
     "@vercel/analytics": "^1.6.1",
     "next": "^15.1.7",
     "react": "^19.0.0",

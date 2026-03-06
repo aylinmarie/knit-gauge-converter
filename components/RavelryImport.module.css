@@ -44,9 +44,9 @@
   color: var(--color-gray-400);
 }
 
-.urlInput:focus {
+.urlInput:focus-visible {
   border-color: var(--color-purple);
-  box-shadow: 0 0 0 3px #c4b5fd;
+  box-shadow: 0 0 0 3px var(--color-purple-light);
 }
 
 .urlInput:disabled {
@@ -74,7 +74,7 @@
 }
 
 .importButton:hover:not(:disabled) {
-  background-color: #f5f3ff;
+  background-color: var(--color-purple-hover-bg);
 }
 
 .importButton:disabled {
@@ -89,25 +89,13 @@
   margin: 0;
 }
 
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .error:empty {
   display: none;
 }
 
 .error {
   font-size: 0.8125rem;
-  color: #b91c1c;
+  color: var(--color-error);
   margin: 0;
 }
 
@@ -119,8 +107,8 @@
   justify-content: space-between;
   gap: 12px;
   padding: 10px 14px;
-  background-color: #f0fdf4;
-  border: 1.5px solid #86efac;
+  background-color: var(--color-success-bg);
+  border: 1.5px solid var(--color-success-border);
   border-radius: var(--radius-sm);
 }
 
@@ -133,7 +121,7 @@
 
 .checkmark {
   font-size: 0.875rem;
-  color: #16a34a;
+  color: var(--color-success-text);
   flex-shrink: 0;
   font-weight: 700;
 }
@@ -156,14 +144,14 @@
 
 .successHint {
   font-size: 0.75rem;
-  color: var(--color-gray-400);
+  color: var(--color-gray-600);
 }
 
 .clearButton {
   font-size: 0.8125rem;
   font-weight: 500;
   font-family: var(--font-family);
-  color: var(--color-gray-400);
+  color: var(--color-gray-600);
   background: none;
   border: none;
   cursor: pointer;

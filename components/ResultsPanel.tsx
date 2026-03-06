@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import styles from "./ResultsPanel.module.css";
 import type { EstimateResult } from "@/app/page";
 import { YARN_WEIGHT_LABELS } from "@/lib/yarnWeights";
@@ -21,10 +24,12 @@ export default function ResultsPanel({
   error,
   unit,
 }: ResultsPanelProps) {
+  const [reasoningOpen, setReasoningOpen] = useState(false);
+
   if (loading) {
     return (
       <div className={styles.skeleton} role="status">
-        <span className={styles.srOnly}>Loading results…</span>
+        <span className="sr-only">Loading results…</span>
         <div className={styles.skeletonBlock} aria-hidden="true" />
         <div className={styles.skeletonBlock} aria-hidden="true" />
         <div className={styles.skeletonBlock} aria-hidden="true" />
@@ -47,10 +52,17 @@ export default function ResultsPanel({
         <div className={styles.emptyIcon} aria-hidden="true">
           ◎
         </div>
+        <p className={styles.emptyHeading}>Get Your Gauge Estimate</p>
         <p className={styles.emptyText}>
-          Fill in the form and click &ldquo;Estimate Gauge&rdquo; to get your
-          gauge recommendation.
+          Fill in your pattern&rsquo;s gauge and the yarn weight you&rsquo;re
+          substituting, then click &ldquo;Estimate Gauge.&rdquo;
         </p>
+        <ul className={styles.emptyFeatureList} aria-label="What you'll get" role="list">
+          <li>Estimated stitch gauge for your yarn</li>
+          <li>Row gauge (if you provide one)</li>
+          <li>Suggested starting needle size</li>
+          <li>AI explanation of the estimation</li>
+        </ul>
       </div>
     );
   }
@@ -72,6 +84,8 @@ export default function ResultsPanel({
         ? toMetric(result.estimatedRowGauge)
         : result.estimatedRowGauge
       : undefined;
+
+  const reasoningText = isMetric ? result.reasoningMetric : result.reasoning;
 
   return (
     <div className={styles.results}>
@@ -115,15 +129,33 @@ export default function ResultsPanel({
 
       <div className={styles.needleSection}>
         <span className={styles.needleLabel}>Suggested starting needle</span>
-        <p className={styles.needleText}>
-          <strong>
+        <div className={styles.needleCard}>
+          <p className={styles.needleSize}>
             US {needle.us} / {needle.metric}
-          </strong>{" "}
-          — cast on a swatch first to dial in your gauge before starting the
-          project. You'll probably need to adjust your needle size — go up if
-          you're getting too many stitches, down if too few.
-        </p>
+          </p>
+          <p className={styles.needleHint}>Cast on a swatch first to dial in your gauge before starting the project.</p>
+        </div>
       </div>
+
+      {reasoningText && (
+        <div className={styles.reasoningSection}>
+          <button
+            type="button"
+            className={styles.reasoningToggle}
+            onClick={() => setReasoningOpen((o) => !o)}
+            aria-expanded={reasoningOpen}
+            aria-controls="reasoning-text"
+          >
+            <span className={styles.reasoningToggleIcon} aria-hidden="true">
+              {reasoningOpen ? "▾" : "▸"}
+            </span>
+            How we estimated this
+          </button>
+          {reasoningOpen && (
+            <p id="reasoning-text" className={styles.reasoningText}>{reasoningText}</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

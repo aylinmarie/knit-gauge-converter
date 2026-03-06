@@ -194,7 +194,7 @@ export default function GaugeForm({ onSubmit, loading, unit, prefill }: GaugeFor
         type="submit"
         className={styles.submitButton}
         disabled={loading}
-        aria-label={loading ? "Estimating gauge, please wait" : undefined}
+        aria-label={loading ? "Estimating gauge, please wait" : "Estimate Gauge"}
       >
         {loading ? (
           <span className={styles.loadingDots} aria-hidden="true">

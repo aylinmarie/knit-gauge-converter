@@ -60,8 +60,8 @@
   pointer-events: none;
 }
 
-.select:focus,
-.input:focus {
+.select:focus-visible,
+.input:focus-visible {
   border-color: var(--color-purple);
   box-shadow: 0 0 0 3px var(--color-purple-light);
 }

@@ -33,6 +33,11 @@ export default function RavelryImport({
     e.preventDefault();
     if (!url.trim()) return;
 
+    if (!url.includes("ravelry.com/patterns/library/")) {
+      setError("Please enter a Ravelry pattern URL (ravelry.com/patterns/library/...).");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setImported(null);
@@ -78,9 +83,12 @@ export default function RavelryImport({
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.toolLabel}>Import from Ravelry</h2>
       {imported ? (
-        <div className={styles.success}>
+        <div
+          className={styles.success}
+          role="status"
+          aria-label={`Pattern "${imported.patternName}" imported successfully. Fields have been updated.`}
+        >
           <div className={styles.successContent}>
             <span className={styles.checkmark} aria-hidden="true">
               ✓
@@ -104,7 +112,7 @@ export default function RavelryImport({
       ) : (
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputRow}>
-            <label htmlFor="ravelryUrl" className={styles.srOnly}>
+            <label htmlFor="ravelryUrl" className="sr-only">
               Ravelry pattern URL
             </label>
             <input
@@ -141,7 +149,6 @@ export default function RavelryImport({
           <p
             id="ravelry-error"
             className={styles.error}
-            role="alert"
             aria-live="polite"
           >
             {error}

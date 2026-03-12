@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 
-// Loose but practical RFC 5321 check — prevents clearly invalid values
-// without over-rejecting edge cases.
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// O(N) email sanity check — no regex engine, no backtracking risk.
+// Verifies: one @, non-empty local part, domain contains a dot with
+// at least one char on each side. The browser's type="email" handles
+// stricter validation on the client.
+function isPlausibleEmail(email: string): boolean {
+  const at = email.indexOf("@");
+  if (at < 1) return false;
+  if (email.indexOf("@", at + 1) !== -1) return false; // multiple @
+  const domain = email.slice(at + 1);
+  const dot = domain.lastIndexOf(".");
+  return dot >= 1 && dot < domain.length - 1;
+}
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -18,7 +27,7 @@ export async function POST(request: Request) {
       ? ((body as Record<string, unknown>).email as string).trim().toLowerCase()
       : null;
 
-  if (!email || !EMAIL_RE.test(email)) {
+  if (!email || !isPlausibleEmail(email)) {
     return NextResponse.json({ error: "A valid email address is required." }, { status: 422 });
   }
 

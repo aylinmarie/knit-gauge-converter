@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import type { YarnWeightKey } from "@/lib/yarnWeights";
 import styles from "./page.module.css";
 import GaugeForm from "@/components/GaugeForm";
@@ -26,7 +26,6 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [unit, setUnit] = useState<"imperial" | "metric">("imperial");
   const [showEmailCapture, setShowEmailCapture] = useState(false);
-  const emailCaptureAutoShown = useRef(false);
   const [prefill, setPrefill] = useState<
     | {
         patternGauge?: number;
@@ -69,11 +68,6 @@ export default function Home() {
         patternRowGauge: data.patternRowGauge,
         userYarnWeight: data.userYarnWeight as YarnWeightKey,
       });
-
-      if (!emailCaptureAutoShown.current) {
-        emailCaptureAutoShown.current = true;
-        setShowEmailCapture(true);
-      }
 
       // On mobile, scroll results into view automatically
       if (typeof window !== "undefined" && window.innerWidth <= 768) {

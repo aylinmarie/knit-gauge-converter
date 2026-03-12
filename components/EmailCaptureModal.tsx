@@ -75,11 +75,13 @@ export default function EmailCaptureModal({ isOpen, onClose }: Props) {
         ) : (
           <>
             <h2 id="email-capture-title" className={styles.title}>
-              Want pattern import?
+              Full pattern conversion is coming!
             </h2>
             <p className={styles.body}>
-              Enter your email to get notified when direct pattern import
-              launches — no spam, just feature updates.
+              Soon you&apos;ll be able to paste in any pattern and get a
+              brand-new PDF rewritten for your yarn — stitch counts, row
+              counts, and all. Drop your email and we&apos;ll tell you when
+              it&apos;s ready.
             </p>
             <form onSubmit={handleSubmit} className={styles.form}>
               <input

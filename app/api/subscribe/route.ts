@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       ? ((body as Record<string, unknown>).email as string).trim().toLowerCase()
       : null;
 
-  if (!email || !isPlausibleEmail(email)) {
+  if (!email || email.length > 254 || !isPlausibleEmail(email)) {
     return NextResponse.json({ error: "A valid email address is required." }, { status: 422 });
   }
 

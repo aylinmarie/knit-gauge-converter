@@ -4,8 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
 const LIMITS: Record<string, { max: number; windowMs: number }> = {
-  "/api/ravelry":  { max: 15,  windowMs: 60_000 },
-  "/api/estimate": { max: 60, windowMs: 60_000 },
+  "/api/ravelry":   { max: 15, windowMs: 60_000 },
+  "/api/estimate":  { max: 60, windowMs: 60_000 },
+  "/api/subscribe": { max: 5,  windowMs: 60_000 },
 };
 
 export function middleware(req: NextRequest) {
@@ -37,5 +38,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/ravelry", "/api/estimate"],
+  matcher: ["/api/ravelry", "/api/estimate", "/api/subscribe"],
 };

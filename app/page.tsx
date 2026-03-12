@@ -194,15 +194,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        Knitting Gauge Estimator — powered by Claude AI ·{" "}
-        <a
-          href="https://www.aylinmarie.co/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Aylin Marie
-          <span className="sr-only"> (opens in new tab)</span>
-        </a>
+        Knitting Gauge Estimator — powered by Claude AI
         {" "}·{" "}
         <button
           className={styles.footerLink}

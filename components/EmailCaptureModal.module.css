@@ -72,7 +72,7 @@
 }
 
 .input:focus {
-  border-color: var(--color-purple);
+  border-color: var(--color-accent);
 }
 
 .actions {
@@ -87,7 +87,7 @@
   font-weight: 600;
   font-family: var(--font-family);
   color: var(--color-white);
-  background-color: var(--color-purple);
+  background-color: var(--color-accent);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -95,7 +95,7 @@
 }
 
 .submitBtn:hover {
-  background-color: var(--color-purple-dark);
+  background-color: var(--color-accent-dark);
 }
 
 .skipBtn {
@@ -139,8 +139,8 @@
   font-size: 0.875rem;
   font-weight: 600;
   font-family: var(--font-family);
-  color: var(--color-purple);
-  background-color: var(--color-purple-light);
+  color: var(--color-accent);
+  background-color: var(--color-accent-subtle);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -148,7 +148,7 @@
 }
 
 .doneBtn:hover {
-  background-color: var(--color-purple-light);
+  background-color: var(--color-accent-subtle);
   filter: brightness(0.95);
 }
 

@@ -6,7 +6,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: var(--color-purple);
+  background-color: var(--color-accent);
   color: var(--color-white);
   border-radius: 9999px;
   font-size: 0.875rem;
@@ -18,5 +18,5 @@
 }
 
 .button:hover {
-  background-color: var(--color-purple-dark);
+  background-color: var(--color-accent-dark);
 }

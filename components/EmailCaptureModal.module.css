@@ -75,6 +75,12 @@
   border-color: var(--color-accent);
 }
 
+.error {
+  font-size: 0.75rem;
+  color: var(--color-error);
+  margin-top: -4px;
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -94,8 +100,13 @@
   transition: background-color 0.15s ease;
 }
 
-.submitBtn:hover {
+.submitBtn:hover:not(:disabled) {
   background-color: var(--color-accent-dark);
+}
+
+.submitBtn:disabled {
+  background-color: var(--color-gray-300);
+  cursor: not-allowed;
 }
 
 .skipBtn {

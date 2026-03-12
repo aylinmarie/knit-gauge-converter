@@ -10,14 +10,18 @@ interface Props {
 
 export default function EmailCaptureModal({ isOpen, onClose }: Props) {
   const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
   const firstFocusRef = useRef<HTMLInputElement>(null);
 
   // Reset form state each time the modal opens
   useEffect(() => {
     if (isOpen) {
       setEmail("");
+      setSubmitting(false);
       setSubmitted(false);
+      setError("");
     }
   }, [isOpen]);
 
@@ -46,10 +50,31 @@ export default function EmailCaptureModal({ isOpen, onClose }: Props) {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire up real email capture API before launch
-    setSubmitted(true);
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(
+          (body as { error?: string }).error ?? "Something went wrong. Please try again."
+        );
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -98,18 +123,23 @@ export default function EmailCaptureModal({ isOpen, onClose }: Props) {
                 className={styles.input}
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setError(""); }}
                 aria-label="Email address"
                 autoComplete="email"
+                disabled={submitting}
               />
+              {error && (
+                <p className={styles.error} role="alert">{error}</p>
+              )}
               <div className={styles.actions}>
-                <button type="submit" className={styles.submitBtn}>
-                  Notify me
+                <button type="submit" className={styles.submitBtn} disabled={submitting}>
+                  {submitting ? "Saving…" : "Notify me"}
                 </button>
                 <button
                   type="button"
                   className={styles.skipBtn}
                   onClick={onClose}
+                  disabled={submitting}
                 >
                   No thanks
                 </button>

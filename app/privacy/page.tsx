@@ -21,7 +21,7 @@ export default function PrivacyPage() {
           <p className={styles.lead}>
             This policy explains what personal data the Knitting Gauge Estimator
             collects, why, and what rights you have over it. The controller of
-            your data is <strong>[Your Name]</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;).
+            your data is <strong>Aylin Atkins</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;).
           </p>
         </section>
 
@@ -152,8 +152,8 @@ export default function PrivacyPage() {
           <h2 className={styles.heading}>5. Contact</h2>
           <p className={styles.body}>
             For any privacy-related questions or requests, email us at{" "}
-            <a href="mailto:[privacy@yourdomain.com]">
-              [privacy@yourdomain.com]
+            <a href="mailto:hello@aylinmarie.co">
+              hello@aylinmarie.co
             </a>
             . We will respond within 30 days.
           </p>

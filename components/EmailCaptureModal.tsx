@@ -144,6 +144,13 @@ export default function EmailCaptureModal({ isOpen, onClose }: Props) {
                   No thanks
                 </button>
               </div>
+              <p className={styles.consent}>
+                By submitting you agree to our{" "}
+                <a href="/privacy" target="_blank" rel="noopener noreferrer">
+                  Privacy Policy
+                </a>
+                . No spam, unsubscribe any time.
+              </p>
             </form>
           </>
         )}

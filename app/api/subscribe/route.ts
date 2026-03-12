@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 // Loose but practical RFC 5321 check — prevents clearly invalid values
 // without over-rejecting edge cases.
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "A valid email address is required." }, { status: 422 });
   }
 
-  const { error } = await supabase
+  const { error } = await getSupabase()
     .from("email_signups")
     .insert({ email })
     .single();

@@ -196,6 +196,8 @@ export default function Home() {
         >
           Sign up for updates
         </button>
+        {" "}·{" "}
+        <a href="/privacy">Privacy Policy</a>
       </footer>
 
       <EmailCaptureModal

@@ -11,14 +11,22 @@ interface Props {
 export default function EmailCaptureModal({ isOpen, onClose }: Props) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
   const firstFocusRef = useRef<HTMLInputElement>(null);
 
+  // Reset form state each time the modal opens
   useEffect(() => {
-    if (isOpen && !submitted) {
+    if (isOpen) {
+      setEmail("");
+      setSubmitted(false);
+    }
+  }, [isOpen]);
+
+  // Focus the email input when the modal opens
+  useEffect(() => {
+    if (isOpen) {
       firstFocusRef.current?.focus();
     }
-  }, [isOpen, submitted]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -33,11 +41,7 @@ export default function EmailCaptureModal({ isOpen, onClose }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.includes("@") || !email.includes(".")) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    setError("");
+    // TODO: wire up real email capture API before launch
     setSubmitted(true);
   };
 
@@ -77,20 +81,18 @@ export default function EmailCaptureModal({ isOpen, onClose }: Props) {
               Enter your email to get notified when direct pattern import
               launches — no spam, just feature updates.
             </p>
-            <form onSubmit={handleSubmit} className={styles.form} noValidate>
+            <form onSubmit={handleSubmit} className={styles.form}>
               <input
                 ref={firstFocusRef}
                 type="email"
+                required
                 className={styles.input}
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                onChange={(e) => setEmail(e.target.value)}
                 aria-label="Email address"
                 autoComplete="email"
               />
-              {error && (
-                <p className={styles.error} role="alert">{error}</p>
-              )}
               <div className={styles.actions}>
                 <button type="submit" className={styles.submitBtn}>
                   Notify me

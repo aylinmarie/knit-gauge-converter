@@ -75,12 +75,6 @@
   border-color: var(--color-purple);
 }
 
-.error {
-  font-size: 0.75rem;
-  color: var(--color-error);
-  margin-top: -4px;
-}
-
 .actions {
   display: flex;
   align-items: center;
@@ -154,7 +148,8 @@
 }
 
 .doneBtn:hover {
-  background-color: #ddd6fe;
+  background-color: var(--color-purple-light);
+  filter: brightness(0.95);
 }
 
 @media (max-width: 768px) {

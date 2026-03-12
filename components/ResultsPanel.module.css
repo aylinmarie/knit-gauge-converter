@@ -253,15 +253,6 @@
   color: var(--color-gray-600);
 }
 
-.needleTips {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 0.8125rem;
-  color: var(--color-gray-400);
-  font-variant-numeric: tabular-nums;
-}
-
 /* Reasoning section */
 .reasoningSection {
   display: flex;

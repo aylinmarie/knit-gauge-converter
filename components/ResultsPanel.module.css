@@ -55,7 +55,7 @@
   content: "•";
   position: absolute;
   left: 0;
-  color: var(--color-purple);
+  color: var(--color-accent);
 }
 
 /* Loading skeleton */
@@ -229,11 +229,11 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-purple);
+  color: var(--color-accent);
 }
 
 .needleCard {
-  border-left: 3px solid var(--color-purple);
+  border-left: 3px solid var(--color-accent);
   padding-left: 16px;
   display: flex;
   flex-direction: column;

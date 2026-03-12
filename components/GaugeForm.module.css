@@ -62,8 +62,8 @@
 
 .select:focus-visible,
 .input:focus-visible {
-  border-color: var(--color-purple);
-  box-shadow: 0 0 0 3px var(--color-purple-light);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
 }
 
 .select:disabled,
@@ -136,8 +136,8 @@
   font-weight: 600;
   font-family: var(--font-family);
   color: var(--color-white);
-  background-color: var(--color-purple);
-  border: 2px solid var(--color-purple);
+  background-color: var(--color-accent);
+  border: 2px solid var(--color-accent);
   border-radius: var(--radius-sm);
   cursor: pointer;
   letter-spacing: 0.01em;
@@ -145,13 +145,13 @@
 }
 
 .submitButton:hover:not(:disabled) {
-  background-color: var(--color-purple-dark);
-  border-color: var(--color-purple-dark);
+  background-color: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
 }
 
 .submitButton:active:not(:disabled) {
-  background-color: var(--color-purple-dark);
-  border-color: var(--color-purple-dark);
+  background-color: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
 }
 
 .submitButton:disabled {

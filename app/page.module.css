@@ -24,6 +24,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .headerTitle {
@@ -105,8 +106,8 @@
   height: 18px;
   font-size: 0.625rem;
   font-weight: 700;
-  color: var(--color-purple);
-  background-color: var(--color-purple-light);
+  color: var(--color-accent);
+  background-color: var(--color-accent-subtle);
   border-radius: 50%;
   flex-shrink: 0;
   letter-spacing: 0;
@@ -150,7 +151,7 @@
 }
 
 .unitToggle:hover {
-  border-color: var(--color-purple);
+  border-color: var(--color-accent);
 }
 
 .unitToggleLabel {
@@ -160,7 +161,7 @@
 }
 
 .unitActive {
-  color: var(--color-purple);
+  color: var(--color-accent);
   font-weight: 700;
 }
 
@@ -179,15 +180,26 @@
   margin-left: 4px;
 }
 
-.footer a {
-  color: var(--color-purple);
+.footer a,
+.footerLink {
+  color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
   font-weight: 500;
 }
 
-.footer a:hover {
-  color: var(--color-purple-dark);
+.footer a:hover,
+.footerLink:hover {
+  color: var(--color-accent-dark);
+}
+
+.footerLink {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -218,7 +230,7 @@
   }
 
   .toolDivider {
-    margin: 20px -20px;
+    margin: 20px 0;
   }
 
   .rightColumn {

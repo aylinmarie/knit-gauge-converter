@@ -17,11 +17,15 @@
   --color-gray-600: #525252;
   --color-gray-800: #262626;
 
-  /* Purple accent — #7c3aed — 5.3:1 on white, passes WCAG AA */
-  --color-purple: #7c3aed;
-  --color-purple-dark: #6d28d9;
-  --color-purple-light: #ede9fe;
-  --color-purple-hover-bg: #f5f3ff;
+  /* Rust accent primitives */
+  --color-rust-500: #c2410c;
+  --color-rust-700: #9a3412;
+  --color-rust-50: #fff7ed;
+
+  /* Semantic accent tokens — #c2410c — 4.6:1 on white, passes WCAG AA */
+  --color-accent: var(--color-rust-500);
+  --color-accent-dark: var(--color-rust-700);
+  --color-accent-subtle: var(--color-rust-50);
 
   --color-error: #b91c1c;
   --color-success-bg: #f0fdf4;
@@ -53,7 +57,7 @@ body {
 
 /* Global focus ring — keyboard users get a clear purple outline */
 :focus-visible {
-  outline: 2px solid var(--color-purple);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 

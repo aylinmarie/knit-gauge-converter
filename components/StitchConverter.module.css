@@ -61,8 +61,8 @@
 }
 
 .input:focus {
-  border-color: var(--color-purple);
-  box-shadow: 0 0 0 3px var(--color-purple-light);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
 }
 
 .input:disabled {

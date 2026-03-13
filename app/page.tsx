@@ -194,7 +194,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        Knitting Gauge Estimator — powered by Claude AI
+        Knitting Gauge Estimator
       </footer>
     </div>
   );

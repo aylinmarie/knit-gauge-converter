@@ -17,11 +17,13 @@ interface RavelryImportProps {
     patternYarnWeight?: string;
     patternName: string;
   }) => void;
+  onClear: () => void;
   disabled: boolean;
 }
 
 export default function RavelryImport({
   onImport,
+  onClear,
   disabled,
 }: RavelryImportProps) {
   const [url, setUrl] = useState("");
@@ -79,6 +81,7 @@ export default function RavelryImport({
     setImported(null);
     setUrl("");
     setError(null);
+    onClear();
   };
 
   return (

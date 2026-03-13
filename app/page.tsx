@@ -34,6 +34,7 @@ export default function Home() {
       }
     | undefined
   >(undefined);
+  const [ravelryPrefillActive, setRavelryPrefillActive] = useState(false);
 
   const handleSubmit = useCallback(async (data: {
     patternYarnWeight: string;
@@ -91,6 +92,13 @@ export default function Home() {
     patternName: string;
   }) => {
     setPrefill({ patternGauge, patternRowGauge, patternYarnWeight });
+    setRavelryPrefillActive(true);
+  }, []);
+
+  const handleClearRavelry = useCallback(() => {
+    setPrefill(undefined);
+    setRavelryPrefillActive(false);
+    setResult(null);
   }, []);
 
   const isMetric = unit === "metric";
@@ -135,14 +143,17 @@ export default function Home() {
 
       <main className={styles.main}>
         <section className={styles.leftColumn} aria-label="Tools">
+          <p className={styles.introBanner}>
+            Substituting a different yarn? Enter your pattern&rsquo;s gauge and the yarn weight you want to use &mdash; we&rsquo;ll estimate how your new yarn will knit up and suggest a starting needle size.
+          </p>
           <div className={styles.toolSection}>
             <div className={styles.stepHeader}>
-              <span className={styles.stepBadge} aria-hidden="true">1</span>
-              <h2 className={styles.toolLabel}>Import from Ravelry</h2>
+              <h2 className={styles.toolLabel}>Have a Ravelry pattern? Import to skip manual entry</h2>
               <span className={styles.stepOptional}>optional</span>
             </div>
             <RavelryImport
               onImport={handleImport}
+              onClear={handleClearRavelry}
               disabled={loading}
             />
           </div>
@@ -157,6 +168,7 @@ export default function Home() {
               loading={loading}
               unit={unit}
               prefill={prefill}
+              patternLocked={ravelryPrefillActive}
             />
           </div>
           <div className={styles.toolDivider} />

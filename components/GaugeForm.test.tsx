@@ -107,4 +107,60 @@ describe("GaugeForm", () => {
       expect(defaultProps.onSubmit).not.toHaveBeenCalled();
     });
   });
+
+  describe("patternLocked mode", () => {
+    const lockedPrefill = {
+      patternGauge: 18,
+      patternRowGauge: 24,
+      patternYarnWeight: "medium",
+    };
+
+    it("hides pattern input fields when patternLocked is true", () => {
+      render(
+        <GaugeForm
+          {...defaultProps}
+          patternLocked={true}
+          prefill={lockedPrefill}
+        />
+      );
+      expect(screen.queryByLabelText(/Pattern Yarn Weight/i)).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/Stitch Gauge/i)).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/Row Gauge/i)).not.toBeInTheDocument();
+    });
+
+    it("shows locked card with yarn weight label when patternLocked is true", async () => {
+      render(
+        <GaugeForm
+          {...defaultProps}
+          patternLocked={true}
+          prefill={lockedPrefill}
+        />
+      );
+      // Wait for prefill useEffect to run and check locked card is visible
+      const card = await screen.findByLabelText(/Pattern info from Ravelry/i);
+      expect(card).toBeInTheDocument();
+      expect(card).toHaveTextContent(/Medium \/ Worsted/i);
+    });
+
+    it("submits prefilled values when patternLocked is true", async () => {
+      const user = userEvent.setup();
+      render(
+        <GaugeForm
+          {...defaultProps}
+          patternLocked={true}
+          prefill={lockedPrefill}
+        />
+      );
+
+      await user.click(screen.getByRole("button", { name: "Estimate Gauge" }));
+
+      expect(defaultProps.onSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          patternGauge: 18,
+          patternRowGauge: 24,
+          patternYarnWeight: "medium",
+        })
+      );
+    });
+  });
 });

@@ -108,10 +108,6 @@ export default function Home() {
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <h1 className={styles.headerTitle}>Knitting Gauge Estimator</h1>
-          <span className={styles.headerSubtitle}>
-            Gauge estimator, pattern stitch conversion + needle recommendations
-            for yarn substitution
-          </span>
         </div>
         <button
           className={styles.unitToggle}

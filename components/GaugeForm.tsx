@@ -35,9 +35,10 @@ interface GaugeFormProps {
   loading: boolean;
   unit: "imperial" | "metric";
   prefill?: Prefill;
+  patternLocked?: boolean;
 }
 
-export default function GaugeForm({ onSubmit, loading, unit, prefill }: GaugeFormProps) {
+export default function GaugeForm({ onSubmit, loading, unit, prefill, patternLocked }: GaugeFormProps) {
   const [patternYarnWeight, setPatternYarnWeight] = useState("medium");
   const [patternGauge, setPatternGauge] = useState<string>("18");
   const [patternRowGauge, setPatternRowGauge] = useState<string>("");
@@ -91,77 +92,113 @@ export default function GaugeForm({ onSubmit, loading, unit, prefill }: GaugeFor
     });
   };
 
+  const gaugeDisplayUnit = unit === "metric" ? "sts / 10 cm" : "sts / 4\"";
+  const rowGaugeDisplayUnit = unit === "metric" ? "rows / 10 cm" : "rows / 4\"";
+
   return (
     <form className={styles.form} onSubmit={handleSubmit} aria-busy={loading}>
-      <div className={styles.fieldGroup}>
-        <label htmlFor="patternYarnWeight" className={styles.label}>
-          Pattern Yarn Weight
-          <span className={styles.labelHint}>
-            The yarn weight specified in the original pattern
-          </span>
-        </label>
-        <div className={styles.selectWrapper}>
-          <select
-            id="patternYarnWeight"
-            className={styles.select}
-            value={patternYarnWeight}
-            onChange={(e) => setPatternYarnWeight(e.target.value)}
-            disabled={loading}
-            required
-          >
-            {YARN_WEIGHTS.map((w) => (
-              <option key={w.value} value={w.value}>
-                {w.label}
-              </option>
-            ))}
-          </select>
+      {patternLocked ? (
+        <div className={styles.patternLockedCard} aria-label="Pattern info from Ravelry (read-only)">
+          <div className={styles.patternLockedLabel}>
+            Pattern Info
+            <span className={styles.patternLockedSource}>from Ravelry</span>
+          </div>
+          <div className={styles.patternLockedRow}>
+            <div className={styles.patternLockedField}>
+              <span className={styles.patternLockedFieldLabel}>Weight</span>
+              <span className={styles.patternLockedFieldValue}>
+                {YARN_WEIGHTS.find((w) => w.value === patternYarnWeight)?.label ?? patternYarnWeight}
+              </span>
+            </div>
+            <div className={styles.patternLockedField}>
+              <span className={styles.patternLockedFieldLabel}>Stitch gauge</span>
+              <span className={styles.patternLockedFieldValue}>
+                {patternGauge} {gaugeDisplayUnit}
+              </span>
+            </div>
+            {patternRowGauge && (
+              <div className={styles.patternLockedField}>
+                <span className={styles.patternLockedFieldLabel}>Row gauge</span>
+                <span className={styles.patternLockedFieldValue}>
+                  {patternRowGauge} {rowGaugeDisplayUnit}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className={styles.fieldGroup}>
+            <label htmlFor="patternYarnWeight" className={styles.label}>
+              Pattern Yarn Weight
+              <span className={styles.labelHint}>
+                The yarn weight specified in the original pattern
+              </span>
+            </label>
+            <div className={styles.selectWrapper}>
+              <select
+                id="patternYarnWeight"
+                className={styles.select}
+                value={patternYarnWeight}
+                onChange={(e) => setPatternYarnWeight(e.target.value)}
+                disabled={loading}
+                required
+              >
+                {YARN_WEIGHTS.map((w) => (
+                  <option key={w.value} value={w.value}>
+                    {w.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-      <div className={styles.gaugeRow}>
-        <div className={styles.fieldGroup}>
-          <label htmlFor="patternGauge" className={styles.label}>
-            Stitch Gauge
-            <span className={styles.labelHint}>
-              {gaugeUnit}
-            </span>
-          </label>
-          <input
-            id="patternGauge"
-            type="number"
-            className={styles.input}
-            value={patternGauge}
-            onChange={(e) => setPatternGauge(e.target.value)}
-            min="1"
-            max={unit === "metric" ? "98" : "100"}
-            step="0.5"
-            placeholder={unit === "metric" ? "e.g. 18" : "e.g. 18"}
-            disabled={loading}
-            required
-          />
-        </div>
+          <div className={styles.gaugeRow}>
+            <div className={styles.fieldGroup}>
+              <label htmlFor="patternGauge" className={styles.label}>
+                Stitch Gauge
+                <span className={styles.labelHint}>
+                  {gaugeUnit}
+                </span>
+              </label>
+              <input
+                id="patternGauge"
+                type="number"
+                className={styles.input}
+                value={patternGauge}
+                onChange={(e) => setPatternGauge(e.target.value)}
+                min="1"
+                max={unit === "metric" ? "98" : "100"}
+                step="0.5"
+                placeholder={unit === "metric" ? "e.g. 18" : "e.g. 18"}
+                disabled={loading}
+                required
+              />
+            </div>
 
-        <div className={styles.fieldGroup}>
-          <label htmlFor="patternRowGauge" className={styles.label}>
-            Row Gauge
-            <span className={styles.labelHint}>
-              {rowGaugeUnit} <span className={styles.optionalInline}>optional</span>
-            </span>
-          </label>
-          <input
-            id="patternRowGauge"
-            type="number"
-            className={styles.input}
-            value={patternRowGauge}
-            onChange={(e) => setPatternRowGauge(e.target.value)}
-            min="1"
-            max={unit === "metric" ? "196" : "200"}
-            step="0.5"
-            placeholder={unit === "metric" ? "e.g. 24" : "e.g. 24"}
-            disabled={loading}
-          />
-        </div>
-      </div>
+            <div className={styles.fieldGroup}>
+              <label htmlFor="patternRowGauge" className={styles.label}>
+                Row Gauge
+                <span className={styles.labelHint}>
+                  {rowGaugeUnit} <span className={styles.optionalInline}>optional</span>
+                </span>
+              </label>
+              <input
+                id="patternRowGauge"
+                type="number"
+                className={styles.input}
+                value={patternRowGauge}
+                onChange={(e) => setPatternRowGauge(e.target.value)}
+                min="1"
+                max={unit === "metric" ? "196" : "200"}
+                step="0.5"
+                placeholder={unit === "metric" ? "e.g. 24" : "e.g. 24"}
+                disabled={loading}
+              />
+            </div>
+          </div>
+        </>
+      )}
 
       <div className={styles.divider} />
 

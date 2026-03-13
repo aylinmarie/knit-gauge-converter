@@ -7,7 +7,6 @@ import GaugeForm from "@/components/GaugeForm";
 import ResultsPanel from "@/components/ResultsPanel";
 import StitchConverter from "@/components/StitchConverter";
 import RavelryImport from "@/components/RavelryImport";
-import EmailCaptureModal from "@/components/EmailCaptureModal";
 
 export interface EstimateResult {
   estimatedGauge: number;
@@ -25,7 +24,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [unit, setUnit] = useState<"imperial" | "metric">("imperial");
-  const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [prefill, setPrefill] = useState<
     | {
         patternGauge?: number;
@@ -189,21 +187,7 @@ export default function Home() {
 
       <footer className={styles.footer}>
         Knitting Gauge Estimator — powered by Claude AI
-        {" "}·{" "}
-        <button
-          className={styles.footerLink}
-          onClick={() => setShowEmailCapture(true)}
-        >
-          Sign up for updates
-        </button>
-        {" "}·{" "}
-        <a href="/privacy">Privacy Policy</a>
       </footer>
-
-      <EmailCaptureModal
-        isOpen={showEmailCapture}
-        onClose={() => setShowEmailCapture(false)}
-      />
     </div>
   );
 }

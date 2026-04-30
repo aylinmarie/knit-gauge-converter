@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Git
+
+Never include a Claude session URL in commit messages or pull request descriptions.
+
 ## Commands
 
 ```bash

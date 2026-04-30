@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, Fragment } from "react";
+import Image from "next/image";
 import type { YarnWeightKey } from "@/lib/yarnWeights";
 import styles from "./page.module.css";
 import ResultsPanel from "@/components/ResultsPanel";
@@ -176,7 +177,7 @@ export default function Home() {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.logo}>
-            <YarnIcon />
+            <Image src="/icon.svg" alt="" width={30} height={30} aria-hidden />
             <span>Gauge Calculator</span>
           </div>
           <button
@@ -504,24 +505,6 @@ export default function Home() {
 
 /* ── Inline SVG components ── */
 
-function YarnIcon() {
-  return (
-    <svg
-      width="30"
-      height="30"
-      viewBox="0 0 30 30"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <circle cx="15" cy="15" r="13" fill="#FFE01B" stroke="#1A1207" strokeWidth="2" />
-      <ellipse cx="15" cy="15" rx="8" ry="13" stroke="#1A1207" strokeWidth="1.5" fill="none" />
-      <ellipse cx="15" cy="15" rx="13" ry="6" stroke="#1A1207" strokeWidth="1.5" fill="none" />
-      <path d="M6 10 Q15 7 24 11" stroke="#1A1207" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-      <path d="M5 18 Q15 15 25 19" stroke="#1A1207" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function HeroIllustration() {
   return (

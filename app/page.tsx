@@ -514,11 +514,12 @@ function YarnIcon() {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <circle cx="15" cy="15" r="13" fill="#FFE01B" stroke="#1A1207" strokeWidth="2" />
-      <ellipse cx="15" cy="15" rx="8" ry="13" stroke="#1A1207" strokeWidth="1.5" fill="none" />
-      <ellipse cx="15" cy="15" rx="13" ry="6" stroke="#1A1207" strokeWidth="1.5" fill="none" />
-      <path d="M6 10 Q15 7 24 11" stroke="#1A1207" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-      <path d="M5 18 Q15 15 25 19" stroke="#1A1207" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <rect x="5" y="2" width="20" height="26" rx="3" fill="#FFE01B" stroke="#1A1207" strokeWidth="2" />
+      <rect x="8" y="5" width="14" height="7" rx="1.5" fill="#1A1207" />
+      <rect x="8" y="15" width="5.5" height="4" rx="1" fill="#1A1207" />
+      <rect x="16.5" y="15" width="5.5" height="4" rx="1" fill="#1A1207" />
+      <rect x="8" y="21" width="5.5" height="4" rx="1" fill="#1A1207" />
+      <rect x="16.5" y="21" width="5.5" height="4" rx="1" fill="#1A1207" />
     </svg>
   );
 }

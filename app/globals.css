@@ -8,7 +8,7 @@
 
 :root {
   /* Brand palette */
-  --color-cream: #FFF9F2;
+  --color-cream: #FAFAFA;
   --color-yellow: #FFE01B;
   --color-yellow-dark: #F0D000;
   --color-dark: #1A1207;
@@ -16,7 +16,7 @@
   --color-white: #FFFFFF;
 
   /* Surface & border */
-  --color-soft: #FFF5E6;
+  --color-soft: #F3F3F3;
   --color-border: #E8DDD0;
   --color-border-dark: #1A1207;
   --color-muted: #7A6E63;

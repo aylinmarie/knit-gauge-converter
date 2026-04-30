@@ -596,6 +596,16 @@
   color: var(--color-muted);
 }
 
+.footerLink {
+  color: var(--color-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footerLink:hover {
+  color: var(--color-text);
+}
+
 /* ── Responsive ── */
 @media (max-width: 680px) {
   .hero {

@@ -498,6 +498,17 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <p>Made for knitters who switch yarns &nbsp;🧶</p>
+        <p>
+          Made by{" "}
+          <a
+            href="https://www.aylinmarie.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.footerLink}
+          >
+            Aylin Marie
+          </a>
+        </p>
       </footer>
     </div>
   );

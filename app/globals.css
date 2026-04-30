@@ -58,7 +58,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-yellow);
+  outline: 3px solid var(--color-dark);
   outline-offset: 2px;
   border-radius: 3px;
 }

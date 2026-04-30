@@ -1,80 +1,225 @@
-.empty {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--color-gray-400);
-  user-select: none;
-  padding: 32px 0;
-}
-
-.emptyIcon {
-  font-size: 2.5rem;
-  line-height: 1;
-}
-
-.emptyHeading {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-gray-800);
-  text-align: center;
-}
-
-.emptyText {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--color-gray-400);
-  text-align: center;
-  max-width: 260px;
-  line-height: 1.6;
-}
-
-.emptyFeatureList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 8px;
-  padding: 16px 20px;
-  background-color: var(--color-gray-100);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-gray-200);
-}
-
-.emptyFeatureList li {
-  font-size: 0.8125rem;
-  color: var(--color-gray-600);
-  line-height: 1.5;
-  padding-left: 1.25em;
-  position: relative;
-}
-
-.emptyFeatureList li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--color-accent);
-}
-
-/* Loading skeleton */
-.skeleton {
-  flex: 1;
+/* ── Results container ── */
+.results {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+/* ── Main gauge card ── */
+.gaugeCard {
+  background: var(--color-yellow);
+  border: 2.5px solid var(--color-dark);
+  border-radius: var(--radius-lg);
+  padding: 36px 40px;
+  text-align: center;
+  box-shadow: 6px 6px 0 var(--color-dark);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gaugeCard {
+    animation: bounceIn 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gaugeCardLabel {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-dark);
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+
+.gaugeCardValue {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 5.5rem);
+  font-weight: 900;
+  color: var(--color-dark);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 6px;
+}
+
+.gaugeCardUnit {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  opacity: 0.65;
+}
+
+.rowGaugeInCard {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1.5px solid rgba(26, 18, 7, 0.18);
+}
+
+.rowGaugeInCardLabel {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-dark);
+  opacity: 0.65;
+  margin-bottom: 4px;
+}
+
+.rowGaugeInCardValue {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-dark);
+  letter-spacing: -0.03em;
+}
+
+.rowGaugeInCardUnit {
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.65;
+}
+
+/* ── Summary row ── */
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-right: 1.5px solid var(--color-border);
+}
+
+.summaryItem:last-child {
+  border-right: none;
+}
+
+.summaryItemLabel {
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}
+
+.summaryItemValue {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  line-height: 1.4;
+}
+
+/* ── Needle section ── */
+.needleSection {
+  background: var(--color-dark);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+}
+
+.needleLabel {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-yellow);
+  margin-bottom: 10px;
+}
+
+.needleCard {
+  /* container for needle info */
+}
+
+.needleSize {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.needleHint {
+  font-size: 0.8125rem;
+  color: rgba(255, 249, 242, 0.6);
+  line-height: 1.6;
+}
+
+/* ── Reasoning ── */
+.reasoningSection {
+  border-top: 1.5px solid var(--color-border);
+  padding-top: 16px;
+}
+
+.reasoningToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  transition: color 0.15s;
+  text-align: left;
+}
+
+.reasoningToggle:hover {
+  color: var(--color-dark);
+}
+
+.reasoningToggleIcon {
+  font-size: 0.75rem;
+}
+
+.reasoningText {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: var(--color-muted);
+  border-left: 3px solid var(--color-border);
+  padding-left: 16px;
+}
+
+/* ── Loading skeleton ── */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .skeletonBlock {
+  border-radius: var(--radius-md);
   background: linear-gradient(
     90deg,
-    var(--color-gray-100) 0%,
-    var(--color-gray-200) 50%,
-    var(--color-gray-100) 100%
+    var(--color-border) 0%,
+    var(--color-soft) 50%,
+    var(--color-border) 100%
   );
   background-size: 200% 100%;
-  border-radius: var(--radius-sm);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -85,250 +230,131 @@
 
 @media (prefers-reduced-motion: reduce) {
   .skeletonBlock {
-    background: var(--color-gray-200);
+    background: var(--color-border);
   }
 }
 
 .skeletonBlock:nth-child(1) {
-  height: 80px;
+  height: 160px;
 }
 
 .skeletonBlock:nth-child(2) {
-  height: 24px;
-  width: 60%;
+  height: 72px;
 }
 
 .skeletonBlock:nth-child(3) {
-  height: 120px;
+  height: 100px;
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
+  0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Results */
-.results {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.gaugeCard {
-  border: 2px solid var(--color-black);
-  border-radius: var(--radius-sm);
-  padding: 28px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .gaugeCard {
-    animation: fadeInUp 0.25s ease-out;
-  }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.gaugeCardLabel {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-gray-400);
-}
-
-.gaugeCardValue {
-  font-size: 3rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--color-black);
-  line-height: 1;
-  margin: 8px 0 4px;
-}
-
-.gaugeCardUnit {
-  font-size: 0.875rem;
-  color: var(--color-gray-600);
-}
-
-.rowGaugeInCard {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--color-gray-200);
-}
-
-.rowGaugeInCardLabel {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-gray-400);
-  white-space: nowrap;
-}
-
-.rowGaugeInCardValue {
-  font-size: 1.375rem;
-  font-weight: 700;
-  color: var(--color-black);
-  letter-spacing: -0.02em;
-}
-
-.rowGaugeInCardUnit {
-  font-size: 0.8125rem;
-  font-weight: 400;
-  color: var(--color-gray-600);
-  margin-left: 2px;
-}
-
-.summaryRow {
-  display: flex;
-  gap: 24px;
-}
-
-.summaryItem {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px;
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-sm);
-}
-
-.summaryItemLabel {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-gray-400);
-}
-
-.summaryItemValue {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--color-black);
-}
-
-/* Needle section */
-.needleSection {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.needleLabel {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.needleCard {
-  border-left: 3px solid var(--color-accent);
-  padding-left: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.needleSize {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: var(--color-black);
-  letter-spacing: -0.01em;
-}
-
-.needleHint {
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: var(--color-gray-600);
-}
-
-.needleTips {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 0.8125rem;
-  color: var(--color-gray-400);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Reasoning section */
-.reasoningSection {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.reasoningToggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  font-family: var(--font-family);
-  color: var(--color-gray-600);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  letter-spacing: 0.01em;
-  transition: color 0.15s ease;
-  text-align: left;
-}
-
-.reasoningToggle:hover {
-  color: var(--color-black);
-}
-
-.reasoningToggleIcon {
-  font-size: 0.75rem;
-  color: var(--color-gray-400);
-}
-
-.reasoningText {
-  font-size: 0.875rem;
-  line-height: 1.7;
-  color: var(--color-gray-600);
-  border-left: 3px solid var(--color-gray-200);
-  padding-left: 16px;
-}
-
-@media (max-width: 768px) {
-  .summaryRow {
-    flex-direction: column;
-    gap: 12px;
-  }
-}
-
-/* Error */
+/* ── Error state ── */
 .error {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border: 1px solid var(--color-gray-300);
-  border-radius: var(--radius-sm);
-  background-color: var(--color-gray-100);
+  background: var(--color-error-bg);
+  border: 2px solid var(--color-error-border);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
 }
 
 .errorTitle {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--color-black);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--color-error);
+  margin-bottom: 6px;
 }
 
 .errorMessage {
   font-size: 0.875rem;
-  color: var(--color-gray-600);
+  color: var(--color-error);
   line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* ── Empty state (fallback, not shown in wizard) ── */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.emptyIcon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.emptyHeading {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-dark);
+}
+
+.emptyText {
+  font-size: 0.9375rem;
+  max-width: 300px;
+  line-height: 1.6;
+}
+
+.emptyFeatureList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 16px 20px;
+  background: var(--color-soft);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 320px;
+}
+
+.emptyFeatureList li {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  padding-left: 1.25em;
+  position: relative;
+  text-align: left;
+}
+
+.emptyFeatureList li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--color-coral);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .gaugeCard {
+    padding: 28px 24px;
+    box-shadow: 4px 4px 0 var(--color-dark);
+  }
+
+  .summaryRow {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryItem {
+    border-right: none;
+    border-bottom: 1.5px solid var(--color-border);
+  }
+
+  .summaryItem:last-child {
+    border-bottom: none;
+  }
+
+  .needleSection {
+    padding: 20px 22px;
+  }
 }

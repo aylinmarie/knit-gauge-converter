@@ -1,20 +1,11 @@
+/* The ravelryBox wrapper in page.module.css provides the container styling.
+   This module styles the inner form elements and states. */
+
 .container {
   width: 100%;
-  background-color: var(--color-accent-subtle);
-  border: 1.5px solid var(--color-accent);
-  border-radius: var(--radius-sm);
-  padding: 16px;
 }
 
-.toolLabel {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
+/* ── Form ── */
 .form {
   display: flex;
   flex-direction: column;
@@ -23,154 +14,88 @@
 
 .inputRow {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .urlInput {
   flex: 1;
   min-width: 0;
-  padding: 10px 12px;
-  font-size: 0.875rem;
-  font-family: var(--font-family);
-  color: var(--color-black);
-  background-color: var(--color-white);
-  border: 1.5px solid var(--color-gray-300);
+  padding: 10px 13px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-dark);
+  background: var(--color-white);
+  border: 2px solid var(--color-border);
   border-radius: var(--radius-sm);
-  outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s;
 }
 
 .urlInput::placeholder {
-  color: var(--color-gray-400);
+  color: var(--color-border);
+  font-size: 0.8125rem;
 }
 
-.urlInput:focus-visible {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+.urlInput:hover {
+  border-color: var(--color-dark);
+}
+
+.urlInput:focus {
+  border-color: var(--color-dark);
+  outline: none;
 }
 
 .urlInput:disabled {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-400);
+  background: var(--color-cream);
   cursor: not-allowed;
 }
 
+/* ── Import button ── */
 .importButton {
-  padding: 10px 18px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  font-family: var(--font-family);
-  color: var(--color-accent);
-  background-color: var(--color-white);
-  border: 1.5px solid var(--color-accent);
+  background: var(--color-dark);
+  color: var(--color-yellow);
+  border: 2px solid var(--color-dark);
   border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 72px;
+  min-width: 80px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .importButton:hover:not(:disabled) {
-  background-color: var(--color-accent-subtle);
+  background: var(--color-yellow);
+  color: var(--color-dark);
 }
 
 .importButton:disabled {
-  color: var(--color-gray-300);
-  border-color: var(--color-gray-300);
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
+/* ── Hint & error text ── */
 .hint {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.error {
   font-size: 0.8125rem;
-  color: var(--color-gray-800);
-  margin: 0;
+  color: var(--color-error);
+  min-height: 1em;
 }
 
 .error:empty {
   display: none;
 }
 
-.error {
-  font-size: 0.8125rem;
-  color: var(--color-error);
-  margin: 0;
-}
-
-/* Success state */
-
-.success {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 14px;
-  background-color: var(--color-success-bg);
-  border: 1.5px solid var(--color-success-border);
-  border-radius: var(--radius-sm);
-}
-
-.successContent {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-.checkmark {
-  font-size: 0.875rem;
-  color: var(--color-success-text);
-  flex-shrink: 0;
-  font-weight: 700;
-}
-
-.successText {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.successName {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-black);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.successHint {
-  font-size: 0.75rem;
-  color: var(--color-gray-600);
-}
-
-.clearButton {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  font-family: var(--font-family);
-  color: var(--color-gray-600);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  min-height: 24px;
-  min-width: 24px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.15s ease;
-}
-
-.clearButton:hover {
-  color: var(--color-black);
-}
-
-/* Loading dots (reused from GaugeForm) */
-
+/* ── Loading dots ── */
 .loadingDots {
   display: inline-flex;
   gap: 3px;
@@ -181,7 +106,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background-color: var(--color-gray-300);
+  background: currentColor;
   animation: blink 1.2s infinite;
 }
 
@@ -194,6 +119,73 @@
 }
 
 @keyframes blink {
-  0%, 80%, 100% { opacity: 0.2; }
-  40% { opacity: 1; }
+  0%, 80%, 100% { opacity: 0.25; }
+  40%           { opacity: 1; }
+}
+
+/* ── Success state ── */
+.success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--color-success-bg);
+  border: 1.5px solid var(--color-success-border);
+  border-radius: var(--radius-sm);
+}
+
+.successContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.checkmark {
+  font-size: 1.125rem;
+  color: var(--color-success);
+  flex-shrink: 0;
+}
+
+.successText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.successName {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.successHint {
+  font-size: 0.75rem;
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.clearButton {
+  background: none;
+  border: 1.5px solid var(--color-success-border);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-success);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.clearButton:hover {
+  background: var(--color-success);
+  color: var(--color-white);
 }
